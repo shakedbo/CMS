@@ -14,6 +14,7 @@ module.exports = function routes(app) {
 
     /**
      * By a given single URL/IP we supply the systems which are used by the asset
+     * Unique ID is returned in the response
      */
     router.post('/scanAsset', validateAsset(), scanAsset);
 
