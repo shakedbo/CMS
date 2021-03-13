@@ -4,11 +4,11 @@ const mongoose = require('mongoose');
 
 
 const SystemSchema = new mongoose.Schema({
-    systemName: {
+    name: {
         type: String
     },
-    category: {
-        type: String
+    categories: {
+        type: [String]
     },
     version: {
         type: Number,
