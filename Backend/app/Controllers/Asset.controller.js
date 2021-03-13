@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const scanDomain = require('../Microservices/WhatCMS');
+const scanDomain = require('../Microservices/SimilarTech');
 const { BatchOfQueriesModel } = require('../Schemas/BatchOfQueries');
 
 
