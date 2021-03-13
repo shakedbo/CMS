@@ -11,8 +11,8 @@ const SystemSchema = new mongoose.Schema({
         type: [String]
     },
     version: {
-        type: Number,
-        default: 0.0
+        type: String,
+        default: "0.0"
     }
 })
 
