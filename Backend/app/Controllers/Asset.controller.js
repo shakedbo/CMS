@@ -1,6 +1,8 @@
 const axios = require('axios');
 
-const scanDomain = require('../Microservices/SimilarTech');
+const SimilarTechScanDomain = require('../Microservices/SimilarTech');
+const WhatCMSScanDomain = require('../Microservices/WhatCMS');
+const RemoveDups = require('../Help-Functions/RemoveDups');
 const { BatchOfQueriesModel } = require('../Schemas/BatchOfQueries');
 
 
@@ -11,12 +13,21 @@ async function scanAsset(req, res) {
     }
     else {
         try {
-            const domainInfo = await scanDomain(res.locals.domain);
+            let domain = res.locals.domain;
+            // Run all the micro-services parallelly with promise all
+            const requests2MicroServices = [SimilarTechScanDomain(domain), WhatCMSScanDomain(domain)];
+
+            // Here, allInfoAboutDomain is an array of arrays when each array is suit for each micro service
+            const allInfoAboutDomain = await Promise.all(requests2MicroServices);
+
+            const infoWithoutDups = RemoveDups(allInfoAboutDomain);
             // Here, keep the results in the DataBase
+
             let batchOfScans = await new BatchOfQueriesModel();
 
-            await batchOfScans.addDomainScan(res.locals.domain, domainInfo);
-            res.send(domainInfo);
+            await batchOfScans.addDomainScan(res.locals.domain, infoWithoutDups);
+
+            res.send({ domainInfo: batchOfScans.domainScans });
         } catch (err) {
             res.status(404).send({ error: err });
         }

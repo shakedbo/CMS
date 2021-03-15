@@ -11,15 +11,19 @@ const DOMAIN_NOT_FOUND = 202;
 
 // The domain already been validated in the middleware :)
 async function scanDomain(domain) {
-    const requestFormatted = `https://whatcms.org/API/Tech?key=${API_KEY}&url=${domain}`;
+    try {
+        const requestFormatted = `https://whatcms.org/API/Tech?key=${API_KEY}&url=${domain}`;
 
-    const response = await axios.get(requestFormatted);
+        const response = await axios.get(requestFormatted);
 
-    if (response.data.result.code === DOMAIN_NOT_FOUND) {
-        // Domain not found :(
-        throw response.data.result.msg;
+        if (response.data.result.code === DOMAIN_NOT_FOUND) {
+            // Domain not found :(
+            return [];
+        }
+        return response.data.results;
+    } catch (err) {
+        return [];
     }
-    return response.data.results;
 }
 
 

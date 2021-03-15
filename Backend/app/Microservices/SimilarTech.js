@@ -9,15 +9,21 @@ const axios = require('axios');
 
 // The domain already been validated in the middleware :)
 async function scanDomain(domain) {
-    const requestFormatted = `https://api.similartech.com/v1/site/${domain}/technologies?userkey=${API_KEY}&format=json`;
+    try {
+        const requestFormatted = `https://api.similartech.com/v1/site/${domain}/technologies?userkey=${API_KEY}&format=json`;
 
-    const response = await axios.get(requestFormatted);
+        const response = await axios.get(requestFormatted);
 
-    if (response.data.found === false) {
-        throw "DOMAIN NOT FOUND !";
+        if (response.data.found === false) {
+            // DOMAIN NOT FOUND
+            return [];
+        }
+
+        return response.data.technologies;
+    } catch (err) {
+        // Maybe we took advantage of the quota - "{"Message":"Rate limit exceeded"}"
+        return [];
     }
-    console.log("response.data.technologies - \n", response.data.technologies);
-    return response.data.technologies;
 }
 
 
