@@ -20,6 +20,7 @@ async function scanAsset(req, res) {
             // Here, allInfoAboutDomain is an array of arrays when each array is suit for each micro service
             const allInfoAboutDomain = await Promise.all(requests2MicroServices);
 
+
             const infoWithoutDups = RemoveDups(allInfoAboutDomain);
 
             console.log("infoWithoutDups = \n", infoWithoutDups);
