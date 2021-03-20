@@ -20,6 +20,7 @@ async function scanDomain(domain) {
             // Domain not found :(
             return [];
         }
+        console.log("what cms:\n", response.data.results)
         return response.data.results;
     } catch (err) {
         return [];
