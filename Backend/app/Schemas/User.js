@@ -94,38 +94,54 @@ UserSchema.statics.getUserByUsername = async function (username) {
 }
 
 
-
 /**
  * Deleting existed user with its password & username
  */
 UserSchema.statics.deleteUser = async function (username, password) {
     try {
-        if (typeof (username) === 'undefined' || typeof (password) === 'undefined') {
-            throw "Username and Password must be provided ...";
-        }
-        const user = await UserModel.getUserByUsername(username);
-        if (user !== null) {
-            const userM = new UserModel(user);
-            // Check wheter the current given password equals to the password in the DataBase
-            if (userM.validatePassword(password)) {
-                await userM.delete();
-                return user;
-            }
-            else {
-                throw "Password Not Right ...";
-            }
-        }
-        else {
-            throw "User Not Exist ...";
-        }
+        const userM = await UserModel.authenticate(username, password);
+        await userM.delete();
     } catch (err) {
         throw err;
     }
 }
 
 
+UserSchema.statics.login = async function (username, password) {
+    try {
+        const userM = await UserModel.authenticate(username, password);
+        // Generating Json Web Token for the login session
+        return await userM.toAuthJSON();
+    } catch (err) {
+        throw err;
+    }
+}
+
+/**
+ * @returns {User Model in case {username, password} is an authenticated pair, otherwise an exception is thrown}
+ */
+UserSchema.statics.authenticate = async function (username, password) {
+    if (typeof (username) === 'undefined' || typeof (password) === 'undefined') {
+        throw "Username and Password must be provided ...";
+    }
+    const user = await UserModel.getUserByUsername(username);
+    if (user !== null) {
+        const userM = new UserModel(user);
+        // Check wheter the current given password equals to the password in the DataBase
+        if (userM.validatePassword(password)) {
+            return userM;
+        }
+        else {
+            throw "Password Not Right ...";
+        }
+    }
+    else {
+        throw "User Not Exist ...";
+    }
+}
+
+
 
 const UserModel = mongoose.model('User', UserSchema);
-
 
 module.exports = { UserModel, UserSchema };

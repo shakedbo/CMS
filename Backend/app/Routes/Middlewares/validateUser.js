@@ -1,8 +1,9 @@
-module.exports = () => {
+// true specifies NOT_MAIL flag
+module.exports = (flag = false) => {
     return (req, res, next) => {
         let username = req.body.username, password = req.body.password, email = req.body.email;
-        if (typeof (username) === 'undefined' || typeof (password) === 'undefined' || typeof (email === 'undefined')) {
-            return res.status(400).send({ error: 'Username, password & email are required fields' });
+        if (typeof (username) === 'undefined' || typeof (password) === 'undefined' || (typeof (email) === 'undefined' && flag === false)) {
+            return res.status(400).send({ error: flag ? 'Username & password are required fields' : 'Username, password & email are required fields' });
         }
         /**
          * [a-zA-Z0-9_]{5,} to match at least five alphanumerics and the underscore
@@ -15,7 +16,7 @@ module.exports = () => {
         if (password.length < 6 || password.length > 12) {
             return res.status(400).send({ error: 'Invalid password' });
         }
-        if (!email.match(/\S+@\S+\.\S+/)) {
+        if (flag === false && !email.match(/\S+@\S+\.\S+/)) {
             return res.status(400).send({ error: 'Invalid email' });
         }
         next();
