@@ -11,13 +11,13 @@ const secret = require('../Config').secret;
  */
 const ITERATIONS = 10000;
 const HASH_LENGTH = 512;
-
+const EXPIRED_MINUTES = 15;
 
 /**
  * Denote 4me, we never save discovered passwords in the DB, only their hashes
  */
-var UserSchema = new mongoose.Schema({
-    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true },
+const UserSchema = new mongoose.Schema({
+    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/, 'is invalid'], index: true },
     email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
     hash: String,
     salt: String
@@ -30,20 +30,18 @@ UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 /**
  * Setting user password
  */
-
-UserSchema.methods.setPassword = function (password) {
+UserSchema.methods.setPassword = async function (password) {
     this.salt = crypto.randomBytes(16).toString('hex');
     // pbkdf2 algorithm is used to generate and validate hashes
     this.hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
 };
 
+
 /**
- * 
  * @param {The given password from the user in order to check if he is authenticated} password 
  * @returns validate passwords - T/F
  */
-
-UserSchema.methods.validPassword = function (password) {
+UserSchema.methods.validatePassword = function (password) {
     var hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
     return this.hash === hash;
 };
@@ -59,11 +57,10 @@ UserSchema.methods.validPassword = function (password) {
  *                         We'll be setting the token expiration to 15 minutes.
  * 
  */
-
 UserSchema.methods.generateJWT = function () {
     const today = new Date();
     const exp = new Date(today);
-    exp.setMinutes(exp.getMinutes() + 15);
+    exp.setMinutes(exp.getMinutes() + EXPIRED_MINUTES);
 
     return jwt.sign({
         id: this._id,
@@ -87,5 +84,48 @@ UserSchema.methods.toAuthJSON = function () {
 };
 
 
+/**
+ * 
+ */
+UserSchema.statics.getUserByUsername = async function (username) {
+    return await UserModel.findOne({ username }, (err, user) => {
+        return user;
+    });
+}
 
-mongoose.model('User', UserSchema);
+
+
+/**
+ * Deleting existed user with its password & username
+ */
+UserSchema.statics.deleteUser = async function (username, password) {
+    try {
+        if (typeof (username) === 'undefined' || typeof (password) === 'undefined') {
+            throw "Username and Password must be provided ...";
+        }
+        const user = await UserModel.getUserByUsername(username);
+        if (user !== null) {
+            const userM = new UserModel(user);
+            // Check wheter the current given password equals to the password in the DataBase
+            if (userM.validatePassword(password)) {
+                await userM.delete();
+                return user;
+            }
+            else {
+                throw "Password Not Right ...";
+            }
+        }
+        else {
+            throw "User Not Exist ...";
+        }
+    } catch (err) {
+        throw err;
+    }
+}
+
+
+
+const UserModel = mongoose.model('User', UserSchema);
+
+
+module.exports = { UserModel, UserSchema };

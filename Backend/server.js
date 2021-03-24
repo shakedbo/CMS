@@ -1,7 +1,8 @@
 
 //Routing
 const express = require('express');
-const routes = require('./app/Routes');
+const assetRoutes = require('./app/Routes/asset.routes');
+const userRoutes = require('./app/Routes/user.routes');
 const { json, urlencoded } = require('body-parser');
 const cors = require('cors');
 
@@ -9,7 +10,7 @@ const cors = require('cors');
  * DataBase connecting
  */
 const mongoose = require('mongoose');
-const db = require('./app/Schemas/KeysToRemote').MongoURI;
+const db = require('./app/Config/db.config').MongoURI;
 mongoose.connect(db, { useNewUrlParser: true })
     .then(console.log('[+] MongoDB connected ...'))
     .catch(err => console.error(err));
@@ -28,7 +29,8 @@ async function main() {
     app.use(urlencoded({ extended: true }));
 
     //Setting routes to the express server
-    routes(app);
+    assetRoutes(app);
+    userRoutes(app);
     const port2 = 4000;
     //connecting the server
     app.listen(port2, console.log(`Server started on port ${port2}`));

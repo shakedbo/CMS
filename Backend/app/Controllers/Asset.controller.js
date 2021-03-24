@@ -1,5 +1,3 @@
-const axios = require('axios');
-
 const SimilarTechScanDomain = require('../Microservices/SimilarTech');
 const WhatCMSScanDomain = require('../Microservices/WhatCMS');
 const WappalyzerScanDomain = require('../Microservices/Wappalyzer');

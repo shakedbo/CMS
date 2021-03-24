@@ -6,7 +6,7 @@ const validateAsset = require('./Middlewares/ValidateAsset');
 const validateID = require('./Middlewares/ValidateID');
 
 // Importing controllers
-const { scanAsset, deleteScanAsset, getScanAsset } = require('../Controllers/Asset.controller');
+const { scanAsset, deleteScanAsset, getScanAsset } = require('../Controllers/asset.controller');
 
 
 module.exports = function routes(app) {
@@ -23,5 +23,5 @@ module.exports = function routes(app) {
     router.delete('/scanAsset:id', validateID(), deleteScanAsset);
 
 
-    app.use('/', router);
+    app.use('/asset', router);
 }
