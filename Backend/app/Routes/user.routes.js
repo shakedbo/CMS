@@ -3,7 +3,7 @@ const express = require('express');
 
 const validateUser = require('./Middlewares/validateUser');
 
-const { signup, deleteUser, login } = require('../Controllers/user.controllers')
+const { signup, deleteUser, login/*, refresh*/ } = require('../Controllers/user.controllers')
 
 
 module.exports = function routes(app) {
@@ -13,6 +13,8 @@ module.exports = function routes(app) {
 
     // true specifies NOT_MAIL flag
     router.post('/login', validateUser(true), login);
+
+    //    router.post('/refresh', refresh);
 
     router.delete('/delete-user', deleteUser);
 

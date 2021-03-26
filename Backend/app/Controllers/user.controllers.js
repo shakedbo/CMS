@@ -20,9 +20,12 @@ async function signup(req, res) {
 async function login(req, res) {
     try {
         const username = req.body.username, password = req.body.password;
-        const user = await UserModel.login(username, password);
-        // user is {username, email. token}
-        res.status(200).send(user);
+        const accessToken = await UserModel.login(username, password);
+        // Returning the new token to the user after its login
+        // secure - Only over https
+        // httpOnly - cannot access the cookie via the DOM (a scrf mitigation)
+        res.cookie("jwt", accessToken, { secure: true, httpOnly: true })
+        res.send();
     } catch (err) {
         return res.status(400).send({ error: `Something went wrong ...\n ${err}` });
     }

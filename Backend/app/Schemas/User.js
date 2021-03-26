@@ -4,7 +4,7 @@ const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 // We need a secret to sign and validate JWT's. This secret should be a random
 // string that is remembered for your application; it's essentially the password to your JWT's.
-const secret = require('../Config').secret;
+const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
 
 /**
  * Constants
@@ -13,6 +13,9 @@ const ITERATIONS = 10000;
 const HASH_LENGTH = 512;
 const EXPIRED_MINUTES = 15;
 
+
+
+
 /**
  * Denote 4me, we never save discovered passwords in the DB, only their hashes
  */
@@ -20,7 +23,8 @@ const UserSchema = new mongoose.Schema({
     username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/, 'is invalid'], index: true },
     email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
     hash: String,
-    salt: String
+    salt: String,
+    refreshToken: String
 }, { timestamps: true });
 
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
@@ -47,7 +51,6 @@ UserSchema.methods.validatePassword = function (password) {
 };
 
 
-
 /**
  * Now, we have everything that's needed to generate a JWT for a user.
  * For the token's payload, we'll be including three fields:
@@ -66,7 +69,7 @@ UserSchema.methods.generateJWT = function () {
         id: this._id,
         username: this.username,
         exp: parseInt(exp.getTime() / 1000),
-    }, secret);
+    }, ACCESS_TOKEN_SECRET);
 };
 
 /**
@@ -84,9 +87,6 @@ UserSchema.methods.toAuthJSON = function () {
 };
 
 
-/**
- * 
- */
 UserSchema.statics.getUserByUsername = async function (username) {
     return await UserModel.findOne({ username }, (err, user) => {
         return user;
@@ -98,23 +98,34 @@ UserSchema.statics.getUserByUsername = async function (username) {
  * Deleting existed user with its password & username
  */
 UserSchema.statics.deleteUser = async function (username, password) {
-    try {
-        const userM = await UserModel.authenticate(username, password);
-        await userM.delete();
-    } catch (err) {
-        throw err;
-    }
+    const userM = await UserModel.authenticate(username, password);
+    await userM.delete();
 }
 
 
 UserSchema.statics.login = async function (username, password) {
-    try {
-        const userM = await UserModel.authenticate(username, password);
-        // Generating Json Web Token for the login session
-        return await userM.toAuthJSON();
-    } catch (err) {
-        throw err;
-    }
+    const userM = await UserModel.authenticate(username, password);
+    // Temp code
+    let payload = { username: userM.username, email: userM.email };
+    let accessToken = jwt.sign(payload, ACCESS_TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: ACCESS_TOKEN_LIFE
+    });
+
+    let refreshToken = jwt.sign(payload, REFRESH_TOKEN_SECRET, {
+        algorithm: "HS256",
+        expiresIn: REFRESH_TOKEN_LIFE
+    })
+
+    userM.refreshToken = refreshToken;
+
+    await userM.save();
+    return accessToken;
+    // Temp code
+
+
+    // Generating Json Web Token for the login session
+    //return await userM.toAuthJSON();
 }
 
 /**

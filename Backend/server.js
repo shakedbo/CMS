@@ -4,6 +4,7 @@ const express = require('express');
 const assetRoutes = require('./app/Routes/asset.routes');
 const userRoutes = require('./app/Routes/user.routes');
 const { json, urlencoded } = require('body-parser');
+const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
 /**
@@ -27,7 +28,8 @@ async function main() {
     app.use(json());
     //parse
     app.use(urlencoded({ extended: true }));
-
+    // Cookies for json web tokens
+    app.use(cookieParser());
     //Setting routes to the express server
     assetRoutes(app);
     userRoutes(app);
