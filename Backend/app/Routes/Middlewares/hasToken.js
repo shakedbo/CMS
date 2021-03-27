@@ -6,8 +6,9 @@ module.exports = async function (req, res, next) {
         let accessToken = req.cookies.jwt;
         // If there is no token stored in cookies, the request is unauthorized
         await UserModel.findByToken(accessToken, (err, user) => {
+            // Token expired or something
             if (err) {
-                throw err;
+                return res.status(401).send({ unauthorized: 'Credentials expired ...' })
             }
             if (!user) {
                 res.locals.hasToken = false;
