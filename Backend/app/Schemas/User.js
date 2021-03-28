@@ -20,6 +20,7 @@ const UserSchema = new mongoose.Schema({
     email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
     password_hash: String,
     salt: String,
+    accessToken: String,
     refreshToken: String
 }, { timestamps: true });
 
@@ -33,8 +34,9 @@ UserSchema.pre("save", function () {
         // pbkdf2 algorithm is used to generate and validate hashes 
         this.password_hash = crypto.pbkdf2Sync(this.password_hash, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
 
-        // Generating the Access Token right after the user signed up
+        // Generating the Access & Refresh Tokens right after the user signed up
         this.refreshToken = createToken({ username: this.username, email: this.email }, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
+        this.accessToken = createToken({ username: this.username, email: this.email }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
     }
 });
 
@@ -44,8 +46,8 @@ UserSchema.pre("save", function () {
  * @returns validate passwords - T/F
  */
 UserSchema.methods.validatePassword = function (password) {
-    var hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
-    return this.hash === hash;
+    var password_hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
+    return this.password_hash === password_hash;
 };
 
 /**
@@ -56,18 +58,22 @@ UserSchema.statics.deleteUser = async function (username, password) {
     await userM.delete();
 }
 
-
+/**
+ * @returns {The user with its new access and refresh tokens}
+ */
 UserSchema.statics.login = async function (username, password) {
-    // If the user not authenticated then an exception would be thrown
+    // If the user did not authenticated then an exception would be thrown
     const userM = await UserModel.authenticate(username, password);
     let payload = { username: userM.username, email: userM.email };
     let accessToken = createToken(payload, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
     let refreshToken = createToken(payload, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
-
+    // In order to re-hash the password we need to update the hash to be the plain text just for a moment
+    userM.password_hash = password;
+    userM.accessToken = accessToken;
     userM.refreshToken = refreshToken;
 
     await userM.save();
-    return accessToken;
+    return userM;
 }
 
 /**
@@ -101,22 +107,63 @@ UserSchema.statics.authenticate = async function (username, password) {
     }
 }
 
+UserSchema.statics.refreshAccessToken = async function (accessToken, refreshToken, callBack) {
+    if (!accessToken || typeof (accessToken) == 'undefined' || !refreshToken || typeof (refreshToken) === 'undefined') {
+        throw "No Access/Refresh tokens specified"
+    }
+
+    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, decode) => {
+        if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
+            return callBack('Refresh token expired')
+        }
+        else {
+            // The refresh token is verified
+            await UserModel.findOne({ "refreshToken": refreshToken }, async (err, user) => {
+                if (err) {
+                    return callBack('Refresh token forgery')
+                }
+
+                user.accessToken = createToken({ username: user.username, email: user.email }, ACCESS_TOKEN_SECRET, 10)
+                await user.save()
+                return callBack(null, user)
+            })
+        }
+    })
+}
+
 // Verify the cookie from browser with the token save in mongodb and
 // the access to controlled route will be granted if both matches.
-UserSchema.statics.findByToken = async function (refreshToken, callBack) {
-    if (!refreshToken || typeof (refreshToken) === 'undefined') {
-        throw "Not access token specified :(";
+// In case the access token expired, we refresh it
+UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshToken, callBack) {
+    if (!accessToken || typeof (accessToken) === 'undefined') {
+        throw "No access token specified :(";
     }
-    jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, (err, decode) => {
-        if (err) {
-            return callBack(err);
+    jwt.verify(accessToken, ACCESS_TOKEN_SECRET, async (err, decode) => {
+        if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
+            // We need to refresh the access token
+            await UserModel.refreshAccessToken(accessToken, refreshToken, async (err, user) => {
+                if (err && err.toString() === 'Refresh token expired') {
+                    return callBack('Refresh token expired')
+                }
+                if (err) {
+                    return callBack(err);
+                }
+
+                return callBack(null, user)
+            });
         }
-        UserModel.findOne({ "username": decode.username, "email": decode.email, "refreshToken": refreshToken }, (err, user) => {
+        else {
             if (err) {
+                // Another error occured
                 return callBack(err);
             }
-            callBack(null, user);
-        })
+            await UserModel.findOne({ "username": decode.username, "email": decode.email, "accessToken": accessToken }, (err, user) => {
+                if (err) {
+                    return callBack(err);
+                }
+                callBack(null, user);
+            })
+        }
     })
 }
 
