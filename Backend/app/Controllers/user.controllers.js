@@ -48,16 +48,5 @@ async function deleteUser(req, res) {
     }
 }
 
-// Refreshing the access token when it expires, using the refresh token
-async function refresh(req, res) {
-    try {
-        let accessToken = req.cookies.jwt;
 
-    } catch (err) {
-
-    }
-}
-
-
-
-module.exports = { signup, deleteUser, login, refresh };
+module.exports = { signup, deleteUser, login };

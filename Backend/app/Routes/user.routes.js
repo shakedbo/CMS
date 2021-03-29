@@ -5,7 +5,7 @@ const validateUser = require('./Middlewares/validateUser');
 const authenticate = require('./Middlewares/authenticate');
 
 
-const { signup, deleteUser, login, refresh } = require('../Controllers/user.controllers')
+const { signup, deleteUser, login } = require('../Controllers/user.controllers')
 
 
 module.exports = function routes(app) {
@@ -17,9 +17,6 @@ module.exports = function routes(app) {
     // we will escape over the validateUser middleWare (which verifies password & username)
     // true specifies NOT_MAIL flag
     router.post('/login', authenticate, validateUser(true), login);
-
-    router.post('/refresh', refresh);
-
 
     //    router.post('/refresh', refresh);
 
