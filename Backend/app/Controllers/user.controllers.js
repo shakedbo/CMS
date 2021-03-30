@@ -33,7 +33,7 @@ async function login(req, res) {
             res.status(200).send({ loginSuccess: "Success in login with username & password :)" });
         }
     } catch (err) {
-        return res.status(400).send({ error: `Something went wrong ...\n ${err}` });
+        return res.status(400).send({ error: err });
     }
 }
 

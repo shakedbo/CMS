@@ -2,7 +2,7 @@
  * What CMS offers a free API which is very suit to our project requirements.
  * Its API only takes a URL/DOMAIN as a parameter
  */
-const API_KEY = require('../Magic').API_KEY_WhatCMS;
+const API_KEY = require('../Magic/API_Keys.magic').API_KEY_WhatCMS;
 const axios = require('axios');
 
 

@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 // We need a secret to sign and validate JWT's. This secret should be a random
 // string that is remembered for your application; it's essentially the password to your JWT's.
 const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
-
+const ERRORS = require('../Magic/Errors.magic');
 /**
  * Constants
  */
@@ -99,11 +99,11 @@ UserSchema.statics.authenticate = async function (username, password) {
             return userM;
         }
         else {
-            throw "Password Not Right ...";
+            throw ERRORS.WRONG_PASSWORD;
         }
     }
     else {
-        throw "User Not Exist ...";
+        throw ERRORS.ACCOUNT_NOT_EXIST;
     }
 }
 
