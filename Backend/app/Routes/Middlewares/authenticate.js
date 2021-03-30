@@ -13,7 +13,6 @@ module.exports = async function (req, res, next) {
                 if (err.toString() === 'Refresh token expired') {
                     // We need to refresh the access token
                     res.locals.unauthorized = { Unauthorized: 'Credentials (cookies) expired ...' };
-                    console.log('[*] Please refresh the access token')
                 }
                 next();
             }

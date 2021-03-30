@@ -25,12 +25,19 @@ async function login(req, res) {
         else {
             const username = req.body.username, password = req.body.password;
             const user = await UserModel.login(username, password);
+            res.header('Content-Type', 'application/json;charset=UTF-8')
+            res.header('Access-Control-Allow-Credentials', true)
+            res.header(
+                'Access-Control-Allow-Headers',
+                'Origin, X-Requested-With, Content-Type, Accept'
+            )
             // Returning the new token to the user after its login
             // secure - Only over https
-            // httpOnly - cannot access the cookie via the DOM (a scrf mitigation)
+            // httpOnly - cannot access the cookie via the DOM (a CSRF mitigation)
             res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: true });
             res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ loginSuccess: "Success in login with username & password :)" });
+            //console.log("[+++] res._headers = ", res._headers.get('set-cookie'));
         }
     } catch (err) {
         return res.status(400).send({ error: err });

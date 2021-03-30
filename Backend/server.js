@@ -20,7 +20,8 @@ mongoose.connect(db, { useNewUrlParser: true })
 async function main() {
     //express config
     var corsOptions = {
-        origin: "http://localhost:3000"
+        origin: "http://localhost:3000",
+        credentials: true // Allow localhost:3000 to access the cookies
     };
     const app = express();
     app.use(cors(corsOptions));

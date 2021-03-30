@@ -5,6 +5,7 @@ import { Input } from "@material-ui/core";
 import { Link } from "react-router-dom";
 import { ServerAddress } from "../Magic";
 import axios from "axios";
+import Cookies from "js-cookie";
 import ERRORS from "../../Magic/Errors.magic";
 
 
@@ -97,9 +98,14 @@ export default function Login() {
     const onSubmit = async () => {
         //api/user/login
         try {
-            const response = await axios.post(ServerAddress + "api/user/login", { username, password });
+            const response = await axios.post(ServerAddress + "api/user/login",
+                { username, password }, {
+                withCredentials: true // Sent cookies if there are
+            });
+            console.log('Res = ', response);
         } catch (err) {
             // To do - Take care of invalid username/ password 400 response errors
+            console.log('[-] Error: ', err)
             switch (err.response.data.error) {
 
                 case ERRORS.ACCOUNT_NOT_EXIST:
