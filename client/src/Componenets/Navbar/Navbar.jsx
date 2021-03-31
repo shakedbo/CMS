@@ -7,6 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Cookies from 'js-cookie'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -34,8 +35,7 @@ export default function Navbar() {
     const classes = useStyles();
     useEffect(() => {
         (async function fetchData() {
-            console.log("cookies: ", window.accessToken);
-
+            console.log("cookies: ", Cookies.get());
         })();
     }, [])
     return (

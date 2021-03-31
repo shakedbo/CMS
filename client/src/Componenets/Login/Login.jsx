@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@material-ui/core";
 import { Link, useHistory } from "react-router-dom";
-import { ServerAddress } from "../Magic";
+import { ServerAddress } from "../../Magic/Config.magic";
 import axios from "axios";
 import ERRORS from "../../Magic/Errors.magic";
 import useStyles from "./useStyles.login";

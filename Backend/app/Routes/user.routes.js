@@ -15,12 +15,14 @@ module.exports = function routes(app) {
 
     // If the token is sent and verified within the request to the route, then
     // we will escape over the validateUser middleWare (which verifies password & username)
-    // true specifies NOT_MAIL flag
-    router.post('/login', authenticate, validateUser(true), login);
+    router.post('/login', authenticate(), validateUser(true), login);
 
     //    router.post('/refresh', refresh);
 
     router.delete('/delete-user', deleteUser);
+
+    // A route to check if the user cookies are authenticated
+    router.post('/is-authenticated', authenticate(true)/*, (req, res) => { }*/);
 
     app.use('/api/user', router);
 

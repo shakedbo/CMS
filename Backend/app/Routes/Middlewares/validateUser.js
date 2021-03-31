@@ -1,6 +1,7 @@
 // true specifies NOT_MAIL flag
 const { INVALID_USERNAME, INVALID_PASSWORD, INVALID_EMAIL } = require('../../../../client/src/Magic/Errors.magic');
 const { R_USERNAME, R_PASSWORD, R_EMAIL } = require('../../../../client/src/Magic/Regex.magic');
+// flag specifices With out mail 
 module.exports = (flag = false) => {
     return (req, res, next) => {
         // If the token sent within the request so there is no point to validate username | password | email

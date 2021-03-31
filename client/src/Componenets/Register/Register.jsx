@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { ServerAddress } from "../Magic";
+import { ServerAddress } from "../../Magic/Config.magic";
 import axios from "axios";
 import useStyles from "../Login/useStyles.login";
 import ERRORS from "../../Magic/Errors.magic";
@@ -33,9 +33,10 @@ export default function Register() {
                 throw "Passwords not match.";
             }
             const response = await axios.post(ServerAddress + "api/user/register",
-                { username, password, email }/*, {
-               // withCredentials: true // Sent cookies if there are
-            }*/);
+                { username, password, email }, {
+                withCredentials: true // Sent cookies if there are
+            });
+            console.log("[+] Response =", response)
             //Clearing the form right after the Data has been added to the DB
             document.formInput.reset();
             setDisplayedError('');
@@ -44,7 +45,6 @@ export default function Register() {
             setConfirmPassword('');
         } catch (err) {
             if (typeof err.response !== 'undefined') {
-                // To do - Take care of invalid username/ password 400 response errors
                 if (err.response.data.error.includes('User validation failed:')) {
                     setDisplayedError(err.response.data.error.substring(('User validation failed:').length))
                 }

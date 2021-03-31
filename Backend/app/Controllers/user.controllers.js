@@ -26,7 +26,7 @@ async function login(req, res) {
     try {
         // If the token sent within the request so there is no point to login again
         if (res.locals.hasToken === true) {
-            res.status(200).send({ loginSuccess: req.user });
+            res.status(200).send({ user: req.user });
         }
         else {
             const username = req.body.username, password = req.body.password;
@@ -36,7 +36,7 @@ async function login(req, res) {
             // httpOnly - cannot access the cookie via the DOM (a CSRF mitigation)
             res.cookie("jwt_access_token", user.accessToken, { httpOnly: false });
             res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true });
-            res.status(200).send({ loginSuccess: "Success in login with username & password :)" });
+            res.status(200).send({ user });
         }
     } catch (error) {
         console.log('[-] error:', error)
