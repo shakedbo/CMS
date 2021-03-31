@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
-
+import { useCookies } from "react-cookie";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -30,8 +30,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
+    const [cookies, setCookie, removeCookie] = useCookies(['jwt_access_token']);
     const classes = useStyles();
+    useEffect(() => {
+        (async function fetchData() {
+            console.log("cookies: ", window.accessToken);
 
+        })();
+    }, [])
     return (
         <div className={classes.root}>
             <AppBar position="static" style={{ backgroundColor: '#ec5990', fontFamily: 'cursive' }}>

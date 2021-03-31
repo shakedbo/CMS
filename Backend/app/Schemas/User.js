@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 // string that is remembered for your application; it's essentially the password to your JWT's.
 const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
 const ERRORS = require('../../../client/src/Magic/Errors.magic');
-const { R_EMAIL, R_USERNAME } = require('../../../client/src/Magic/Regex.magic');
+const { R_EMAIL, R_USERNAME } = require('../Magic/Regex.magic');
 /**
  * Constants
  */
@@ -72,7 +72,6 @@ UserSchema.statics.login = async function (username, password) {
     userM.password_hash = password;
     userM.accessToken = accessToken;
     userM.refreshToken = refreshToken;
-
     await userM.save();
     return userM;
 }

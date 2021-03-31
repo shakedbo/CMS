@@ -32,10 +32,10 @@ export default function Register() {
             if (confirmPassword !== password) {
                 throw "Passwords not match.";
             }
-            await axios.post(ServerAddress + "api/user/register",
-                { username, password, email }, {
-                withCredentials: true // Sent cookies if there are
-            });
+            const response = await axios.post(ServerAddress + "api/user/register",
+                { username, password, email }/*, {
+               // withCredentials: true // Sent cookies if there are
+            }*/);
             //Clearing the form right after the Data has been added to the DB
             document.formInput.reset();
             setDisplayedError('');

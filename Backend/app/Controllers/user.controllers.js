@@ -7,7 +7,7 @@ async function signup(req, res) {
         const user = new UserModel({ username, email, password_hash });
         await user.save();
         // Secure enforcing that the cookies are sent only over https and not over http
-        res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: true })
+        res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: false })
         res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true })
         res.status(200).send({ user });
     } catch (error) {
@@ -34,11 +34,12 @@ async function login(req, res) {
             // Returning the new token to the user after its login
             // secure - Only over https
             // httpOnly - cannot access the cookie via the DOM (a CSRF mitigation)
-            res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: true });
+            res.cookie("jwt_access_token", user.accessToken, { httpOnly: false });
             res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ loginSuccess: "Success in login with username & password :)" });
         }
     } catch (error) {
+        console.log('[-] error:', error)
         return res.status(400).send({ error });
     }
 }

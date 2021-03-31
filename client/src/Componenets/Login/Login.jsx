@@ -55,7 +55,7 @@ export default function Login() {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={classes.form} style={{ height: '350px' }}>
             <label className={classes.formLabel}>Username</label>
             <Input
                 name="userName"

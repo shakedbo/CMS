@@ -4,12 +4,33 @@ export default makeStyles((theme) => ({
         display: 'block',
         boxSizing: 'border-box',
         width: '100%',
-
-        borderRadius: '4px',
-        backgroundColor: 'white',
-        padding: '10px 15px',
+        borderRadius: '40px',
+        backgroundColor: '#f9cddd',
+        padding: '4px 5px',
         marginBottom: '10px',
-        fontSize: '14px'
+        fontSize: '14px',
+        width: '75%',
+        margin: '0 auto',
+        fontWeight: 'bold',
+        '&:hover': {
+            background: '#ec5990'
+        }
+    },
+
+    formLabel: {
+        lineHeight: '2',
+        textAlign: 'left',
+        display: 'block',
+        marginBottom: '13px',
+        marginTop: '20px',
+        color: 'white',
+        fontSize: '14px',
+        fontWeight: '200',
+        marginLeft: '2rem',
+        '&:hover': {
+            color: '#ec5990'
+        }
+
     },
 
     btnSubmit: {
@@ -23,7 +44,7 @@ export default makeStyles((theme) => ({
         fontWeight: '100',
         letterSpacing: '10px',
         appearance: 'none',
-        borderRadius: '4px',
+        borderRadius: '40px',
         display: 'block',
         margin: '0 auto',
         width: '50%',
@@ -33,22 +54,12 @@ export default makeStyles((theme) => ({
         }
     },
 
-    formLabel: {
-        lineHeight: '2',
-        textAlign: 'left',
-        display: 'block',
-        marginBottom: '13px',
-        marginTop: '20px',
-        color: 'white',
-        fontSize: '14px',
-        fontWeight: '200'
-    },
-
     form: {
         maxWidth: '300px',
-        height: '600px',
+        height: '550px',
         margin: '0 auto',
         background: 'black',
+        borderRadius: '1rem'
     },
 
     linkTo: {
