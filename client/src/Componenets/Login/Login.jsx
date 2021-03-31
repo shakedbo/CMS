@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Input } from "@material-ui/core";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { ServerAddress } from "../Magic";
 import axios from "axios";
 import ERRORS from "../../Magic/Errors.magic";
 import useStyles from "./useStyles.login";
-
+import REGEX from "../../Magic/Regex.magic";
 
 export default function Login() {
+    const history = useHistory();
     const [isLoaded, setIsLoaded] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isPasswordWrong, setIsPasswordWrong] = useState(false);
-    const [isUsernameWrong, setIsUsernameWrong] = useState(false);
+    const [displayedError, setDisplayedError] = useState('');
     const { control, handleSubmit } = useForm();
     const classes = useStyles();
 
@@ -32,18 +32,10 @@ export default function Login() {
                 { username, password }, {
                 withCredentials: true // Sent cookies if there are
             });
+            history.push('/');
         } catch (err) {
             // To do - Take care of invalid username/ password 400 response errors
-            console.log('[-] Error: ', err)
-            switch (err.response.data.error) {
-                case ERRORS.ACCOUNT_NOT_EXIST:
-                    setIsUsernameWrong(true);
-                    break;
-                case ERRORS.WRONG_PASSWORD:
-                    setIsUsernameWrong(false);
-                    setIsPasswordWrong(true);
-                    break;
-            }
+            setDisplayedError(err.response.data.error);
         }
     };
 
@@ -57,14 +49,9 @@ export default function Login() {
     if (isLoaded === true) {
         return <h1>Loading ...</h1>
     }
-    let displayError = <div></div>
-    if (isUsernameWrong) {
-        displayError = <h1 className={classes.errorDisplay}>{ERRORS.ACCOUNT_NOT_EXIST}</h1>
-    }
-    else {
-        if (isPasswordWrong) {
-            displayError = <h1 className={classes.errorDisplay}>{ERRORS.WRONG_PASSWORD}</h1>
-        }
+    let error = <div></div>
+    if (displayedError !== '') {
+        error = <h1 className={classes.errorDisplay}>{displayedError}</h1>
     }
 
     return (
@@ -76,7 +63,11 @@ export default function Login() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onUsernameChange(e.target.value)}
-            // inputProps={{ pattern: "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title: 'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters' }}
+                inputProps={{
+                    required: 'You must provide username',
+                    pattern: REGEX.R_USERNAME,
+                    title: ERRORS.INVALID_USERNAME
+                }}
             />
             <label className={classes.formLabel}>Password</label>
             <Input
@@ -85,9 +76,13 @@ export default function Login() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onPasswordChange(e.target.value)}
-            //  inputProps={{ pattern: "(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}", title: 'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters' }}
+                inputProps={{
+                    required: true,
+                    pattern: REGEX.R_PASSWORD,
+                    title: ERRORS.INVALID_PASSWORD
+                }}
             />
-            {displayError}
+            {error}
             <Link to="/register" className={classes.linkTo}>Sign up</Link>
             <input type="submit" className={classes.btnSubmit} />
         </form>

@@ -1,7 +1,6 @@
 // Authenticate the user with its cookies'
 const { UserModel } = require('../../Schemas/User');
 
-
 module.exports = async function (req, res, next) {
     try {
         let accessToken = req.cookies.jwt_access_token;

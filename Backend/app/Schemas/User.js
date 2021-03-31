@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 // We need a secret to sign and validate JWT's. This secret should be a random
 // string that is remembered for your application; it's essentially the password to your JWT's.
 const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
-const ERRORS = require('../Magic/Errors.magic');
-const { R_EMAIL, R_PASSWORD, R_USERNAME } = require('../Magic/Regex.magic');
+const ERRORS = require('../../../client/src/Magic/Errors.magic');
+const { R_EMAIL, R_USERNAME } = require('../../../client/src/Magic/Regex.magic');
 /**
  * Constants
  */

@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { ServerAddress } from "../Magic";
 import axios from "axios";
 import useStyles from "../Login/useStyles.login";
-
+import ERRORS from "../../Magic/Errors.magic";
+import REGEX from "../../Magic/Regex.magic";
 
 export default function Register() {
     const [isLoaded, setIsLoaded] = useState(true);
@@ -89,6 +90,12 @@ export default function Register() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onUsernameChange(e.target.value)}
+                inputProps={{
+                    required: 'You must provide username',
+                    pattern: REGEX.R_USERNAME,
+                    title: ERRORS.INVALID_USERNAME
+                }}
+                autoComplete="username"
             />
             <label className={classes.formLabel}>Password</label>
             <Input
@@ -97,6 +104,12 @@ export default function Register() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onPasswordChange(e.target.value)}
+                inputProps={{
+                    required: true,
+                    pattern: REGEX.R_PASSWORD,
+                    title: ERRORS.INVALID_PASSWORD
+                }}
+                autoComplete="password"
             />
             <label className={classes.formLabel}>Confirm Password</label>
             <Input
@@ -105,6 +118,12 @@ export default function Register() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onConfirmPasswordChange(e.target.value)}
+                inputProps={{
+                    required: true,
+                    pattern: REGEX.R_PASSWORD,
+                    title: ERRORS.INVALID_PASSWORD
+                }}
+                autoComplete="password"
             />
             <label className={classes.formLabel}>Email</label>
             <Input
@@ -113,6 +132,12 @@ export default function Register() {
                 defaultValue=""
                 className={classes.materialUIInput}
                 onChange={e => onEmailChange(e.target.value)}
+                inputProps={{
+                    required: true,
+                    pattern: REGEX.R_EMAIL,
+                    title: ERRORS.INVALID_EMAIL
+                }}
+                autoComplete="email"
             />
             {error}
             <Link to="/login" className={classes.linkTo}>Already have an account? Log in</Link>
