@@ -1,4 +1,6 @@
 // true specifies NOT_MAIL flag
+const { INVALID_USERNAME, INVALID_PASSWORD, INVALID_EMAIL } = require('../../Magic/Errors.magic');
+const { R_USERNAME, R_PASSWORD, R_EMAIL } = require('../../Magic/Regex.magic');
 module.exports = (flag = false) => {
     return (req, res, next) => {
         // If the token sent within the request so there is no point to validate username | password | email
@@ -13,19 +15,18 @@ module.exports = (flag = false) => {
                 }
                 return res.status(400).send({ error: flag ? 'Username & password are required fields' : 'Username, password & email are required fields' });
             }
-            /**
-             * [a-zA-Z0-9_]{5,} to match at least five alphanumerics and the underscore
-             * [a-zA-Z]+ to have at least one letter
-             * [0-9]* to match zero to any occurrence of the given numbers range
-             */
-            if (!username.match(/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/)) {
-                return res.status(400).send({ error: 'Invalid username' });
+            if (!username.match(R_USERNAME)) {
+                return res.status(400).send({ error: INVALID_USERNAME });
             }
-            if (password.length < 6 || password.length > 12) {
-                return res.status(400).send({ error: 'Invalid password' });
+
+            if (!password.match(R_PASSWORD)) {
+                return res.status(400).send({ error: INVALID_PASSWORD });
             }
-            if (flag === false && !email.match(/\S+@\S+\.\S+/)) {
-                return res.status(400).send({ error: 'Invalid email' });
+            // /\S+@\S+\.\S+/
+            // \S means everything that is not whitespace-> \s
+            // .(dot) is a special character so we need to escape it with backslash -> \.
+            if (flag === false && !email.match(R_EMAIL)) {
+                return res.status(400).send({ error: INVALID_EMAIL });
             }
             next();
         }

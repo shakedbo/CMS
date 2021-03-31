@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 // string that is remembered for your application; it's essentially the password to your JWT's.
 const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
 const ERRORS = require('../Magic/Errors.magic');
+const { R_EMAIL, R_PASSWORD, R_USERNAME } = require('../Magic/Regex.magic');
 /**
  * Constants
  */
@@ -16,8 +17,8 @@ const HASH_LENGTH = 512;
  * Denote 4me, we never save discovered passwords in the DB, only their hashes
  */
 const UserSchema = new mongoose.Schema({
-    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9_]{5,}[a-zA-Z]+[0-9]*$/, 'is invalid'], index: true },
-    email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [/\S+@\S+\.\S+/, 'is invalid'], index: true },
+    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [R_USERNAME, 'is invalid'], index: true },
+    email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [R_EMAIL, 'is invalid'], index: true },
     password_hash: String,
     salt: String,
     accessToken: String,

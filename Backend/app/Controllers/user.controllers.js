@@ -10,8 +10,14 @@ async function signup(req, res) {
         res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: true })
         res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true })
         res.status(200).send({ user });
-    } catch (err) {
-        return res.status(400).send({ SignUpError: `Something went wrong ...\n ${err}` });
+    } catch (error) {
+        // If the error is thrown as a result of "username/email is already taken" we sanitize the error to the client side
+        if (typeof error.message !== 'undefined') {
+            return res.status(400).send({ error: error.message });
+        }
+        else {
+            return res.status(400).send({ error });
+        }
     }
 }
 
@@ -25,22 +31,15 @@ async function login(req, res) {
         else {
             const username = req.body.username, password = req.body.password;
             const user = await UserModel.login(username, password);
-            res.header('Content-Type', 'application/json;charset=UTF-8')
-            res.header('Access-Control-Allow-Credentials', true)
-            res.header(
-                'Access-Control-Allow-Headers',
-                'Origin, X-Requested-With, Content-Type, Accept'
-            )
             // Returning the new token to the user after its login
             // secure - Only over https
             // httpOnly - cannot access the cookie via the DOM (a CSRF mitigation)
             res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: true });
             res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ loginSuccess: "Success in login with username & password :)" });
-            //console.log("[+++] res._headers = ", res._headers.get('set-cookie'));
         }
-    } catch (err) {
-        return res.status(400).send({ error: err });
+    } catch (error) {
+        return res.status(400).send({ error });
     }
 }
 
@@ -50,8 +49,8 @@ async function deleteUser(req, res) {
         const username = req.body.username, password = req.body.password;
         const deleted = await UserModel.deleteUser(username, password);
         return res.send({ User_deleted_successfully: deleted })
-    } catch (err) {
-        return res.status(400).send({ error: `Something went wrong ...\n ${err}` });
+    } catch (error) {
+        return res.status(400).send({ error });
     }
 }
 
