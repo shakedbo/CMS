@@ -1,5 +1,5 @@
 const { UserModel } = require('../Schemas/User');
-
+const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../Config/cookies.config');
 
 async function signup(req, res) {
     try {
@@ -7,8 +7,8 @@ async function signup(req, res) {
         const user = new UserModel({ username, email, password_hash });
         await user.save();
         // Secure enforcing that the cookies are sent only over https and not over http
-        res.cookie("jwt_access_token", user.accessToken, { /*secure: true,*/ httpOnly: false })
-        res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true })
+        res.cookie(ACCESS_TOKEN, user.accessToken, { /*secure: true,*/ httpOnly: false })
+        res.cookie(REFRESH_TOKEN, user.refreshToken, { /*secure: true,*/ httpOnly: true })
         res.status(200).send({ user });
     } catch (error) {
         // If the error is thrown as a result of "username/email is already taken" we sanitize the error to the client side
@@ -34,8 +34,8 @@ async function login(req, res) {
             // Returning the new token to the user after its login
             // secure - Only over https
             // httpOnly - cannot access the cookie via the DOM (a CSRF mitigation)
-            res.cookie("jwt_access_token", user.accessToken, { httpOnly: false });
-            res.cookie("jwt_refresh_token", user.refreshToken, { /*secure: true,*/ httpOnly: true });
+            res.cookie(ACCESS_TOKEN, user.accessToken, { httpOnly: false });
+            res.cookie(REFRESH_TOKEN, user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ user });
         }
     } catch (error) {
@@ -55,5 +55,15 @@ async function deleteUser(req, res) {
     }
 }
 
+async function logout(req, res) {
+    try {
+        // Clear the cookies before log out
+        res.clearCookie(ACCESS_TOKEN);
+        res.clearCookie(REFRESH_TOKEN);
+        res.status(200).send({ message: "Cookies were deleted in success" });
+    } catch (error) {
+        res.status(400).send({ error: "Some error in logout ..." })
+    }
+}
 
-module.exports = { signup, deleteUser, login };
+module.exports = { signup, deleteUser, login, logout };

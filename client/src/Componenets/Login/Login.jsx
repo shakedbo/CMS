@@ -10,20 +10,12 @@ import REGEX from "../../Magic/Regex.magic";
 
 export default function Login() {
     const history = useHistory();
-    const [isLoaded, setIsLoaded] = useState(true);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [displayedError, setDisplayedError] = useState('');
     const { control, handleSubmit } = useForm();
     const classes = useStyles();
 
-    useEffect(() => {
-        async function fetchData() {
-
-        }
-        setIsLoaded(false);
-        fetchData();
-    }, [])
 
     const onSubmit = async () => {
         //api/user/login
@@ -46,9 +38,7 @@ export default function Login() {
     const onUsernameChange = username => {
         setUsername(username);
     }
-    if (isLoaded === true) {
-        return <h1>Loading ...</h1>
-    }
+
     let error = <div></div>
     if (displayedError !== '') {
         error = <h1 className={classes.errorDisplay}>{displayedError}</h1>

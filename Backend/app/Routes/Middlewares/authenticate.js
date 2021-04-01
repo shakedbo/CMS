@@ -1,5 +1,7 @@
 // Authenticate the user with its cookies'
 const { UserModel } = require('../../Schemas/User');
+const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../../Config/cookies.config');
+
 
 module.exports = (flag = false) => {
     return async (req, res, next) => {
@@ -14,6 +16,9 @@ module.exports = (flag = false) => {
                         // We need to refresh the access token
                         res.locals.unauthorized = { Unauthorized: 'Credentials (cookies) expired ...' };
                     }
+                    if (flag) {
+                        return res.status(401).send({ error: 'Credentials (cookies) expired ...' })
+                    }
                     next();
                 }
                 else {
@@ -23,13 +28,9 @@ module.exports = (flag = false) => {
                     }
                     else {
                         // update the access token cookie
-                        res.cookie("jwt_access_token", user.accessToken);
+                        res.cookie(ACCESS_TOKEN, user.accessToken);
                         req.accessToken = user.accessToken;
                         req.user = user;
-                        if (flag) {
-                            // Just for the /authenticate route
-                            return res.status(200).send({ user });
-                        }
                         res.locals.hasToken = true;
                         next();
                     }

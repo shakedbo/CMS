@@ -1,25 +1,23 @@
 import React, { useState, useEffect } from "react";
-import IsAuthenticaed from "../../Auth/IsAuthenticated.auth";
+import { Consumer } from "../../Context";
 
 
 export default function Home() {
-    const [isLoaded, setIsLoaded] = useState(true);
-    const [user, setUser] = useState({});
-    useEffect(() => {
-        (async () => {
-            const result = await IsAuthenticaed();
-            result && setUser(result);
-            console.log('[+] user =', user)
-            setIsLoaded(false);
-        })();
-    }, [])
-
-    if (isLoaded) {
-        return <h1>Loaded</h1>
-    }
     return (
-        <h1>
-            In Home !
-        </h1>
+        <Consumer>
+            {value => {
+                const { user } = value.state;
+                if (user._id != null) {
+                    return (
+                        <h1>user._id: {user._id}</h1>
+                    )
+                }
+                else {
+                    return (
+                        <h1>In home</h1>
+                    )
+                }
+            }}
+        </Consumer>
     )
 }

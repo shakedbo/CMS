@@ -6,8 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
-import { useCookies } from "react-cookie";
-import Cookies from 'js-cookie'
+import { Consumer } from "../../Context";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,26 +30,41 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Navbar() {
-    const [cookies, setCookie, removeCookie] = useCookies(['jwt_access_token']);
     const classes = useStyles();
-    useEffect(() => {
-        (async function fetchData() {
-            console.log("cookies: ", Cookies.get());
-        })();
-    }, [])
+
+    const common = (nameOrLink) => {
+        return (
+            <div className={classes.root}>
+                <AppBar position="static" style={{ backgroundColor: '#ec5990', fontFamily: 'cursive' }}>
+                    <Toolbar>
+                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+                            <MenuIcon />
+                        </IconButton>
+                        <Typography variant="h6" className={classes.title}>
+                            <Link to="/" className="btn" className={classes.btns}>CMS</Link>
+                        </Typography>
+                        {nameOrLink}
+                    </Toolbar>
+                </AppBar>
+            </div>
+        )
+    }
+
     return (
-        <div className={classes.root}>
-            <AppBar position="static" style={{ backgroundColor: '#ec5990', fontFamily: 'cursive' }}>
-                <Toolbar>
-                    <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                        <MenuIcon />
-                    </IconButton>
-                    <Typography variant="h6" className={classes.title}>
-                        <Link to="/" className="btn" className={classes.btns}>CMS</Link>
-                    </Typography>
-                    <Link to="/login" className={classes.btns}>Login</Link>
-                </Toolbar>
-            </AppBar>
-        </div>
+        <Consumer>
+            {value => {
+                const { user } = value.state
+                if (user._id == null) {
+                    return (
+                        common(<Link to="/login" className={classes.btns}>Login</Link>)
+                    );
+                }
+                else {
+                    return (
+                        common(<h3 className={classes.btns}>Hello {user.username}</h3>)
+                    )
+                }
+            }}
+        </Consumer>
     );
 }

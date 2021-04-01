@@ -5,7 +5,7 @@ const validateUser = require('./Middlewares/validateUser');
 const authenticate = require('./Middlewares/authenticate');
 
 
-const { signup, deleteUser, login } = require('../Controllers/user.controllers')
+const { signup, deleteUser, login, logout } = require('../Controllers/user.controllers')
 
 
 module.exports = function routes(app) {
@@ -22,7 +22,11 @@ module.exports = function routes(app) {
     router.delete('/delete-user', deleteUser);
 
     // A route to check if the user cookies are authenticated
-    router.post('/is-authenticated', authenticate(true)/*, (req, res) => { }*/);
+    router.post('/is-authenticated', authenticate(true), (req, res) => {
+        return res.status(200).send({ user: req.user });
+    });
+
+    router.post('/logout', authenticate(true), logout);
 
     app.use('/api/user', router);
 
