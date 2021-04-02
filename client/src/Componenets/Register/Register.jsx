@@ -9,6 +9,7 @@ import ERRORS from "../../Magic/Errors.magic";
 import REGEX from "../../Magic/Regex.magic";
 
 import { Consumer } from "../../Context";
+import Logout from "../Logout/logout";
 
 
 export default function Register() {
@@ -75,10 +76,14 @@ export default function Register() {
     return (
         <Consumer>
             {value => {
-                const { user } = value;
+                const { user } = value.state;
                 if (user._id != null) {
                     return (
-                        <h1>You are Already in</h1>
+                        <React.Fragment>
+                            <h1>You are Already in</h1>
+                            <h1>Please log out before logging in to another account</h1>
+                            <Logout />
+                        </React.Fragment>
                     )
                 }
                 else {

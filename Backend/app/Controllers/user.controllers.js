@@ -37,6 +37,7 @@ async function login(req, res) {
             res.cookie(ACCESS_TOKEN, user.accessToken, { httpOnly: false });
             res.cookie(REFRESH_TOKEN, user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ user });
+            //     console.log("[+] Response = ", res)
         }
     } catch (error) {
         console.log('[-] error:', error)

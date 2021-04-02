@@ -19,13 +19,12 @@ export default function Logout() {
         <Consumer>
             {value => {
                 const { user } = value.state;
-                console.log("value.setState = ", value.setState)
                 if (user._id != null) {
                     return (
                         <button onClick={
                             () => {
                                 out();
-                                value.setState();
+                                value.handleChangeUser({});
                             }}> Are you sure you do want to log out?</button>
                     )
                 }

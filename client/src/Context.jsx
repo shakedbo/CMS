@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 import IsAuthenticaed from "./Auth/IsAuthenticated.auth";
-import { ServerAddress } from "./Magic/Config.magic";
-import axios from "axios";
 
 
 const Context = React.createContext();
@@ -18,6 +16,12 @@ const Logout = async (prevState) => {
 
 
 export class Provider extends Component {
+    constructor(props) {
+        super(props)
+        this.handleChangeUser = this.handleChangeUser.bind(this)
+    }
+
+
     state = {
         user: {},
         isLoaded: true
@@ -32,8 +36,12 @@ export class Provider extends Component {
         this.setState({ isLoaded: false })
     }
 
-    async componentDidUpdate() {
 
+    // Cause "this" (without the this binding) is refred to the child component, we enfore the father (Context) to be "this"
+    handleChangeUser(user) {
+        this.setState({
+            user
+        })
     }
 
     render() {
@@ -43,7 +51,7 @@ export class Provider extends Component {
             )
         }
         return (
-            <Context.Provider value={{ state: this.state, setState: this.setState }}>
+            <Context.Provider value={{ state: this.state, handleChangeUser: this.handleChangeUser }}>
                 { this.props.children}
             </Context.Provider >
         )

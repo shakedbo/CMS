@@ -10,8 +10,10 @@ export default makeStyles((theme) => ({
         marginBottom: '10px',
         fontSize: '14px',
         width: '75%',
+        height: '2.3rem',
         margin: '0 auto',
         fontWeight: 'bold',
+        outline: 'none',
         '&:hover': {
             background: '#ec5990'
         }
