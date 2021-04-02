@@ -37,9 +37,6 @@ export default function Navbar() {
             <div className={classes.root}>
                 <AppBar position="static" style={{ backgroundColor: '#ec5990', fontFamily: 'cursive' }}>
                     <Toolbar>
-                        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                            <MenuIcon />
-                        </IconButton>
                         <Typography variant="h6" className={classes.title}>
                             <Link to="/" className="btn" className={classes.btns}>CMS</Link>
                         </Typography>
