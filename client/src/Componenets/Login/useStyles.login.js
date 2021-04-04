@@ -50,6 +50,7 @@ export default makeStyles((theme) => ({
         display: 'block',
         margin: '0 auto',
         width: '50%',
+        outline: 'none',
         '&:hover': {
             background: '#bf1650',
             cursor: 'pointer'

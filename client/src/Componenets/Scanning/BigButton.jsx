@@ -12,7 +12,7 @@ export default function BigButton(props) {
                 borderRadius: '40px',
                 display: 'flex',
                 margin: '0 auto',
-                marginTop: '10rem',
+                marginTop: '2rem',
                 alignItems: 'center',
                 justifyContent: 'center',
                 backgroundColor: 'var(--azure)',
