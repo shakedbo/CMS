@@ -24,3 +24,8 @@
     border-color: black;
     border-left: 0;
 }
+
+.content {
+    margin: auto;
+    justify-content: center;
+}

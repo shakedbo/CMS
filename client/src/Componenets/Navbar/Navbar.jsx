@@ -58,7 +58,13 @@ export default function Navbar() {
                 }
                 else {
                     return (
-                        common(<h3 className={classes.btns}>Hello {user.username}</h3>)
+                        common(
+                            <div>
+                                <Link to="/my-activity" className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Activity</Link>
+                                <Link to="/scanning" className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Scan</Link>
+                                <h3 className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Hello {user.username}</h3>
+                            </div>
+                        )
                     )
                 }
             }}
