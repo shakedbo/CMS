@@ -4,16 +4,27 @@ import IsAuthenticaed from "./Auth/IsAuthenticated.auth";
 
 const Context = React.createContext();
 
-/*
-const Logout = async (prevState) => {
-    return {
-        user: {},
-        isLoaded: false
+
+
+
+const reducer = (prevState, action) => {
+    switch (action.type) {
+        case "REMOVE": {
+            console.log("Removed")
+            return {
+                domainOrIps: prevState.domainOrIps.filter(domOrIP => domOrIP !== action.payload)
+            }
+        }
+        case "ADD": {
+            return {
+                domainOrIps: [...prevState.domainOrIps, action.payload]
+            }
+        }
+        default: {
+            return prevState
+        }
     }
-}*/
-
-
-
+}
 
 export class Provider extends Component {
     constructor(props) {
@@ -24,7 +35,9 @@ export class Provider extends Component {
 
     state = {
         user: {},
-        isLoaded: true
+        isLoaded: true,
+        domainOrIps: [],
+        dispatch: (action) => this.setState(prevState => reducer(prevState, action))
     }
 
     async componentDidMount() {
