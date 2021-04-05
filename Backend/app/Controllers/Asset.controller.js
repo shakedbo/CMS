@@ -9,43 +9,50 @@ const { R_IP, R_DOMAIN } = require("../../../client/src/Magic/Regex.magic");
 async function scan(req, res) {
     try {
         let domains_ips = req.body.domainOrIps;
+        let username = req.user.username;
+        // user.username
+        let batchOfScans = new BatchOfQueriesModel({ username });
         for (const domain_ip of domains_ips) {
-
+            if (domain_ip.match(R_IP)) {
+                // do ip scan ....
+            }
+            else {
+                // do domain scan ...
+                await scanDomain(batchOfScans, domain_ip);
+            }
         }
+        return res.status(200).send({ results: batchOfScans })
     } catch (err) {
+        console.log("error = ", err)
         return res.status(400).send({ error: err })
     }
 }
 
-async function scanAsset(req, res) {
-    if (typeof res.locals.ip !== 'undefined') {
-        res.send({ ahla: res.locals.ip });
+async function scanDomain(batchOfScans, domain) {
+    try {
+        // Run all the micro-services parallelly with promise all
+        const requests2MicroServices = [SimilarTechScanDomain(domain), WhatCMSScanDomain(domain), WappalyzerScanDomain(domain)];
+        // Here, allInfoAboutDomain is an array of arrays when each array is suit for each micro service
+        const allInfoAboutDomain = await Promise.all(requests2MicroServices);
+        const infoWithoutDups = RemoveDups(allInfoAboutDomain);
+
+        // Here, keep the results in the DataBase
+        await batchOfScans.addDomainScan(domain, infoWithoutDups);
+
+        return batchOfScans.domainScans;
+    } catch (err) {
+        return [];
     }
-    else {
-        try {
-            let domain = res.locals.domain;
-            // Run all the micro-services parallelly with promise all
-            const requests2MicroServices = [SimilarTechScanDomain(domain), WhatCMSScanDomain(domain), WappalyzerScanDomain(domain)];
-
-            // Here, allInfoAboutDomain is an array of arrays when each array is suit for each micro service
-            const allInfoAboutDomain = await Promise.all(requests2MicroServices);
+}
 
 
-            const infoWithoutDups = RemoveDups(allInfoAboutDomain);
-
-            console.log("infoWithoutDups = \n", infoWithoutDups);
-
-            // Here, keep the results in the DataBase
-
-            let batchOfScans = await new BatchOfQueriesModel();
-
-            await batchOfScans.addDomainScan(res.locals.domain, infoWithoutDups);
-
-            res.send({ domainInfo: batchOfScans.domainScans });
-        } catch (err) {
-            console.log("Error here")
-            res.status(404).send({ error: err });
-        }
+async function getAllUserScans(req, res) {
+    try {
+        const username = req.user.username;
+        const userScans = await BatchOfQueriesModel.find({ username });
+        return res.status(200).send({ userScans })
+    } catch (err) {
+        return res.status(400).send({ error: err })
     }
 }
 
@@ -62,4 +69,4 @@ async function deleteScanAsset(req, res) {
 
 
 
-module.exports = { scan, scanAsset, getScanAsset, deleteScanAsset };
+module.exports = { scan, getScanAsset, deleteScanAsset, getAllUserScans };

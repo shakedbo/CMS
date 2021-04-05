@@ -22,7 +22,6 @@ export default function BigButton(props) {
                 outline: 'none',
                 cursor: 'pointer'
             }}
-            onClick={() => console.log("Clicked")}
         >
             {props.text}
         </button>

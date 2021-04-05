@@ -12,7 +12,7 @@ const useStyle = makeStyles((theme) => ({
     inputDesign: {
         display: 'flex',
         boxSizing: 'border-box',
-        borderRadius: '40px',
+        borderRadius: '4px',
         backgroundColor: 'var(--azure)',
         padding: '4px 5px',
         marginBottom: '10px',
@@ -59,7 +59,6 @@ export default function AddScan() {
 
     const onDomainOrIPChange = (domainOrIP) => {
         setDomainOrIP(domainOrIP);
-        console.log("domainOrIP =", domainOrIP)
     }
 
     const onClick = async (e, dispatch) => {

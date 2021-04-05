@@ -44,11 +44,19 @@ const reducer = (prevState, action) => {
                 domainOrIps: prevState.domainOrIps.filter(domOrIP => domOrIP !== action.payload)
             }
         }
+
         case "ADD": {
             return {
                 domainOrIps: [...prevState.domainOrIps, action.payload]
             }
         }
+
+        case "REMOVE_ALL": {
+            return {
+                domainOrIps: []
+            }
+        }
+
         default: {
             return prevState
         }

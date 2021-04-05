@@ -12,11 +12,7 @@ const { SystemModel, SystemSchema } = require('./System');
 
 // ToDo: add log date & time
 const BatchOfQueriesSchema = new mongoose.Schema({
-    scanId: {
-        // The ID of the scan result in order to distinguish between scans
-        type: String,
-        default: 1234567
-    },
+    // The ID of the scan result in order to distinguish between scans is added automatically
     domainScans: {
         type: [DomainScanSchema],
         default: []
@@ -24,13 +20,17 @@ const BatchOfQueriesSchema = new mongoose.Schema({
     ipsScans: {
         type: [IPScanSchema],
         default: []
+    },
+    // The username of the scanner
+    username: {
+        type: String
     }
 })
 
 BatchOfQueriesSchema.methods.addDomainScan = async function (domainAsset, domainInfo) {
     try {
         // At first, the scanDomains
-        const newDomainScan = await new DomainScanModel({ asset: domainAsset });
+        const newDomainScan = new DomainScanModel({ asset: domainAsset });
         await newDomainScan.addSystems(domainInfo);
 
         this.domainScans.push(newDomainScan);

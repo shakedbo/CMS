@@ -2,11 +2,12 @@ const express = require('express');
 
 
 // Importing middlewares
-const validateAsset = require('./Middlewares/ValidateAsset');
 const validateID = require('./Middlewares/ValidateID');
 const validateAssets = require('./Middlewares/validateAssets');
+const authenticate = require('./Middlewares/authenticate');
+
 // Importing controllers
-const { scan, scanAsset, deleteScanAsset, getScanAsset } = require('../Controllers/asset.controller');
+const { scan, deleteScanAsset, getScanAsset, getAllUserScans } = require('../Controllers/asset.controller');
 
 
 module.exports = function routes(app) {
@@ -16,13 +17,13 @@ module.exports = function routes(app) {
      * By a given single URL/IP we supply the systems which are used by the asset
      * Unique ID is returned in the response
      */
-    router.post('/scanAsset', validateAsset(), scanAsset);
+    // router.get('/scanResult:id', validateID(), getScanAsset);
 
-    router.get('/scanResult:id', validateID(), getScanAsset);
+    // router.delete('/scanAsset:id', validateID(), deleteScanAsset);
 
-    router.delete('/scanAsset:id', validateID(), deleteScanAsset);
+    router.post('/scan', validateAssets(), authenticate(), scan)
 
-    router.post('/scan', validateAssets(), scan)
+    router.get('/get-all-user-scans', authenticate(), getAllUserScans)
 
     app.use('/api/asset', router);
 }
