@@ -27,6 +27,9 @@ export default function Scanning() {
         }
     }
 
+    const onSubmit = async (event) => {
+        event.preventDefault();
+    }
 
     return (
         <Consumer>
@@ -35,7 +38,7 @@ export default function Scanning() {
                 const { domainOrIps } = value.state;
                 if (user._id != null) {
                     return (
-                        <form>
+                        <form onSubmit={(event) => onSubmit(event)}>
                             <Title name="Scan your" title="ips/domains"></Title>
                             <div style={{ display: 'flex', flexWrap: 'wrap', alignContent: 'space-between' }}>
                                 <div style={{ margin: '0 auto', justifyContent: 'center' }}>

@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Consumer } from "../../Context";
 import { makeStyles } from "@material-ui/core/styles";
-import { R_IP, R_DOMAIN, R_IPDOMAIN } from "../../Magic/Regex.magic";
+import { R_IP, R_DOMAIN } from "../../Magic/Regex.magic";
 import { INVALID_IPDOMAIN } from "../../Magic/Errors.magic";
+import { useAlert } from 'react-alert'
+
+
+
 
 const useStyle = makeStyles((theme) => ({
     inputDesign: {
@@ -21,8 +25,8 @@ const useStyle = makeStyles((theme) => ({
     },
 
     addInput: {
-        background: 'var(--mainBlue)',
-        color: 'white',
+        background: 'none',
+        color: 'var(--azure)',
         textTransform: 'uppercase',
         border: 'none',
         padding: '20px',
@@ -40,7 +44,7 @@ const useStyle = makeStyles((theme) => ({
         width: '3rem',
         fontSize: '3rem',
         '&:hover': {
-            background: 'var(--azure)',
+            color: 'var(--mainBlue)',
             cursor: 'pointer'
         },
         outline: 'none'
@@ -50,6 +54,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function AddScan() {
     const classes = useStyle();
+    const ale = useAlert();
     const [domainOrIP, setDomainOrIP] = useState('');
 
     const onDomainOrIPChange = (domainOrIP) => {
@@ -57,35 +62,33 @@ export default function AddScan() {
         console.log("domainOrIP =", domainOrIP)
     }
 
-    /*const onSubmit = (e) => {
-        e.preventDefault();
-        dispatch({ type: "ADD", payload: domainOrIP })
-    }*/
+    const onClick = async (e, dispatch) => {
+        e.preventDefault()
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('Event: Form Submit');
-    };
-
+        if (domainOrIP.match(R_DOMAIN) || domainOrIP.match(new RegExp(R_IP))) {
+            dispatch({ type: "ADD", payload: domainOrIP })
+            setDomainOrIP('')
+        }
+        else {
+            ale.show('Oh look, an alert!')
+        }
+    }
 
     return (
         <Consumer>
             {value => {
-                const { dispatch } = value;
+                const { dispatch } = value.state;
                 return (
-                    <form onSubmit={handleSubmit}>
-                        {/*<input
-                            name="ip"
-                            defaultValue=""
+                    <div style={{ display: 'flex' }}>
+                        <input
+                            value={domainOrIP}
+                            name="dip"
                             onChange={e => onDomainOrIPChange(e.target.value)}
                             className={classes.inputDesign}
                             placeholder={domainOrIP}
-                            required='You must provide username'
-                            pattern={R_IPDOMAIN}
-                            title={INVALID_IPDOMAIN}
-                        />*/}
-                        <input type="submit" />
-                    </form>
+                        />
+                        <button className={classes.addInput} onClick={(e) => onClick(e, dispatch)} >+</button>
+                    </div>
                 )
             }}
         </Consumer>
