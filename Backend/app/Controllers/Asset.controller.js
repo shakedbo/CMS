@@ -3,7 +3,19 @@ const WhatCMSScanDomain = require('../Microservices/WhatCMS');
 const WappalyzerScanDomain = require('../Microservices/Wappalyzer');
 const RemoveDups = require('../Help-Functions/RemoveDups');
 const { BatchOfQueriesModel } = require('../Schemas/BatchOfQueries');
+const { R_IP, R_DOMAIN } = require("../../../client/src/Magic/Regex.magic");
 
+
+async function scan(req, res) {
+    try {
+        let domains_ips = req.body.domainOrIps;
+        for (const domain_ip of domains_ips) {
+
+        }
+    } catch (err) {
+        return res.status(400).send({ error: err })
+    }
+}
 
 async function scanAsset(req, res) {
     if (typeof res.locals.ip !== 'undefined') {
@@ -31,6 +43,7 @@ async function scanAsset(req, res) {
 
             res.send({ domainInfo: batchOfScans.domainScans });
         } catch (err) {
+            console.log("Error here")
             res.status(404).send({ error: err });
         }
     }
@@ -49,4 +62,4 @@ async function deleteScanAsset(req, res) {
 
 
 
-module.exports = { scanAsset, getScanAsset, deleteScanAsset };
+module.exports = { scan, scanAsset, getScanAsset, deleteScanAsset };

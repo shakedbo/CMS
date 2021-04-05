@@ -2,7 +2,32 @@ import React, { Component } from "react";
 import IsAuthenticaed from "./Auth/IsAuthenticated.auth";
 
 
+
+
+
+
+import { transitions, positions, Provider as AlertProvider } from 'react-alert'
+import AlertTemplate from 'react-alert-template-basic'
+// optional configuration
+const options = {
+    // you can also just use 'bottom center'
+    position: positions.TOP_CENTER,
+    type: 'error',
+    timeout: 3000,
+    offset: '30px',
+    // you can also just use 'scale'
+    transition: transitions.SCALE
+}
+
+
+
 const Context = React.createContext();
+
+
+
+
+
+
 
 
 
@@ -10,7 +35,11 @@ const Context = React.createContext();
 const reducer = (prevState, action) => {
     switch (action.type) {
         case "REMOVE": {
-            console.log("Removed")
+            if (prevState.domainOrIps.length === 1) {
+                return {
+                    domainOrIps: []
+                }
+            }
             return {
                 domainOrIps: prevState.domainOrIps.filter(domOrIP => domOrIP !== action.payload)
             }
@@ -39,8 +68,8 @@ export class Provider extends Component {
         domainOrIps: [],
         dispatch: (action) => this.setState(prevState => reducer(prevState, action))
     }
-
     async componentDidMount() {
+
         this.setState({ isLoaded: true })
         const result = await IsAuthenticaed();
         result && this.setState({
@@ -64,9 +93,13 @@ export class Provider extends Component {
             )
         }
         return (
-            <Context.Provider value={{ state: this.state, handleChangeUser: this.handleChangeUser }}>
-                { this.props.children}
-            </Context.Provider >
+            <AlertProvider template={AlertTemplate} {...options}>
+
+                <Context.Provider value={{ state: this.state, handleChangeUser: this.handleChangeUser }}>
+                    {this.props.children}
+                </Context.Provider >
+            </AlertProvider>
+
         )
     }
 }

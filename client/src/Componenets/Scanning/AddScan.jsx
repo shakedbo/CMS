@@ -54,7 +54,7 @@ const useStyle = makeStyles((theme) => ({
 
 export default function AddScan() {
     const classes = useStyle();
-    const ale = useAlert();
+    const alert = useAlert();
     const [domainOrIP, setDomainOrIP] = useState('');
 
     const onDomainOrIPChange = (domainOrIP) => {
@@ -70,7 +70,7 @@ export default function AddScan() {
             setDomainOrIP('')
         }
         else {
-            ale.show('Oh look, an alert!')
+            alert.show(INVALID_IPDOMAIN)
         }
     }
 

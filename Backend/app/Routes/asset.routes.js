@@ -4,9 +4,9 @@ const express = require('express');
 // Importing middlewares
 const validateAsset = require('./Middlewares/ValidateAsset');
 const validateID = require('./Middlewares/ValidateID');
-
+const validateAssets = require('./Middlewares/validateAssets');
 // Importing controllers
-const { scanAsset, deleteScanAsset, getScanAsset } = require('../Controllers/asset.controller');
+const { scan, scanAsset, deleteScanAsset, getScanAsset } = require('../Controllers/asset.controller');
 
 
 module.exports = function routes(app) {
@@ -22,6 +22,7 @@ module.exports = function routes(app) {
 
     router.delete('/scanAsset:id', validateID(), deleteScanAsset);
 
+    router.post('/scan', validateAssets(), scan)
 
-    app.use('/asset', router);
+    app.use('/api/asset', router);
 }
