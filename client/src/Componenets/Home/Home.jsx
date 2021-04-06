@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Consumer } from "../../Context";
-
+import Blog from "./Blog";
 
 export default function Home() {
     return (
@@ -9,7 +9,9 @@ export default function Home() {
                 const { user } = value.state;
                 if (user._id != null) {
                     return (
-                        <h1>user._id: {user._id}</h1>
+                        <div>
+                            <Blog></Blog>
+                        </div>
                     )
                 }
                 else {
@@ -18,6 +20,6 @@ export default function Home() {
                     )
                 }
             }}
-        </Consumer>
+        </Consumer >
     )
 }
