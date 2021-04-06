@@ -12,15 +12,19 @@ async function scan(req, res) {
         let username = req.user.username;
         // user.username
         let batchOfScans = new BatchOfQueriesModel({ username });
-        for (const domain_ip of domains_ips) {
+        const promises = domains_ips.map(domain_ip => {
             if (domain_ip.match(R_IP)) {
                 // do ip scan ....
             }
             else {
                 // do domain scan ...
-                await scanDomain(batchOfScans, domain_ip);
+                return scanDomain(batchOfScans, domain_ip);
             }
-        }
+        });
+
+        await Promise.all(promises)
+        console.log("[+] batchOfScans = \n", batchOfScans)
+        console.log("------------------------")
         return res.status(200).send({ results: batchOfScans })
     } catch (err) {
         console.log("error = ", err)

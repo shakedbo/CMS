@@ -10,7 +10,7 @@ import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
 import AllResults from "./AllResults.scanning";
-
+import { Button } from 'react-bootstrap'
 
 const useStyle = makeStyles((theme) => ({
     loading: {
@@ -61,6 +61,11 @@ export default function Scanning() {
         }
     }
 
+    const closeTable = () => {
+        setScanResults({});
+        setDisplayResults(false)
+    }
+
     if (isLoading === true) {
         return (
             <div>
@@ -74,6 +79,7 @@ export default function Scanning() {
         return (
             <div>
                 <Title name="scan" title="results"></Title>
+                <Button variant="secondary" style={{ margin: '0 auto', display: 'flex', marginBottom: '2rem' }} onClick={closeTable}>Close Results</Button>
                 <AllResults domainScans={JSON.stringify(scanResults.domainScans)} ipScans={JSON.stringify(scanResults.ipScans)}></AllResults>
             </div>
         )

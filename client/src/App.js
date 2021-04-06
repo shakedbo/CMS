@@ -10,6 +10,8 @@ import Sidebar from "./Componenets/Sidebar/Sidebar";
 import Activity from "./Componenets/Activity/Activity";
 import Scanning from "./Componenets/Scanning/Scanning";
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function App() {
   return (
