@@ -9,8 +9,7 @@ import { useAlert } from 'react-alert'
 import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
-import AllResults from "./Results/AllResults.scanning";
-import DIPResult from "./Results/DIPResult.results";
+import AllResults from "./AllResults.scanning";
 
 
 const useStyle = makeStyles((theme) => ({
@@ -75,7 +74,7 @@ export default function Scanning() {
         return (
             <div>
                 <Title name="scan" title="results"></Title>
-                <AllResults domainScans={scanResults.domainScans} ipScans={scanResults.ipScans}></AllResults>
+                <AllResults domainScans={JSON.stringify(scanResults.domainScans)} ipScans={JSON.stringify(scanResults.ipScans)}></AllResults>
             </div>
         )
     }
@@ -88,7 +87,6 @@ export default function Scanning() {
                     return (
                         <form onSubmit={(event) => onSubmit(event, domainOrIps, dispatch)}>
                             <Title name="Scan your" title="ips/domains"></Title>
-                            <DIPResult></DIPResult>
                             <div style={{ display: 'flex', flexWrap: 'wrap', alignContent: 'space-between' }}>
                                 <div style={{ margin: '0 auto', justifyContent: 'center' }}>
                                     <AddScan></AddScan>
