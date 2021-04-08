@@ -1,7 +1,7 @@
 // Authenticate the user with its cookies'
 const { UserModel } = require('../../Schemas/User');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../../Config/cookies.config');
-
+const { TOKEN_EXPIRED } = require('../../../../client/src/Magic/Errors.magic');
 
 module.exports = (flag = false) => {
     return async (req, res, next) => {
@@ -14,10 +14,10 @@ module.exports = (flag = false) => {
                 if (err !== null) {
                     if (err.toString() === 'Refresh token expired') {
                         // We need to refresh the access token
-                        res.locals.unauthorized = { Unauthorized: 'Credentials (cookies) expired ...' };
+                        res.locals.unauthorized = { Unauthorized: TOKEN_EXPIRED };
                     }
                     if (flag) {
-                        return res.status(401).send({ error: 'Credentials (cookies) expired ...' })
+                        return res.status(401).send({ error: TOKEN_EXPIRED })
                     }
                     next();
                 }
@@ -31,7 +31,6 @@ module.exports = (flag = false) => {
                         res.cookie(ACCESS_TOKEN, user.accessToken);
                         req.accessToken = user.accessToken;
                         req.user = user;
-                        console.log("[HI]\n".repeat(100))
                         res.locals.user = user;
                         res.locals.hasToken = true;
                         next();

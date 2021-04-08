@@ -9,6 +9,7 @@ import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
 import AllResults from "./AllResults.scanning";
+import { DIP } from "../../Magic/Asset.magic";
 
 const useStyle = makeStyles((theme) => ({
     loading: {
@@ -30,13 +31,25 @@ export default function Scanning() {
     const [displayResults, setDisplayResults] = useState(false);
 
 
-    const allScans = (domainOrIps) => {
+    const allScans = (domainOrIps, dispatch) => {
+        console.log("domainOrIps = ", domainOrIps)
         if (domainOrIps.length !== 0) {
-            return domainOrIps && Array.isArray(domainOrIps) && domainOrIps.map(dip => <DomainOrIp domainOrIP={dip}></DomainOrIp>)
+            return domainOrIps && Array.isArray(domainOrIps) && domainOrIps.map(dip => {
+                { console.log("dip = ", dip) }
+                return <DomainOrIp domainOrIP={dip} dispatch={dispatch}></DomainOrIp>
+            })
         }
         else {
             return <div></div>
         }
+    }
+
+    const sanitizeArray = (domainOrIPs) => {
+        let arr = [];
+        for (let dip of domainOrIPs) {
+            arr.push(dip.slice(',')[0])
+        }
+        return arr;
     }
 
     const onSubmit = async (event, domainOrIps, dispatch) => {
@@ -47,7 +60,7 @@ export default function Scanning() {
         else {
             try {
                 setIsLoading(true)
-                const res = await axios.post(ServerAddress + "api/asset/scan", { domainOrIps }, { withCredentials: true })
+                const res = await axios.post(ServerAddress + "api/asset/scan", { domainOrIps: sanitizeArray(domainOrIps) }, { withCredentials: true })
                 setScanResults(res.data.results)
                 setDisplayResults(true);
                 // clear the context assets
@@ -95,7 +108,7 @@ export default function Scanning() {
                                 <div style={{ margin: '0 25%', justifyContent: 'center' }}>
                                     <AddScan></AddScan>
                                     <div className={classes.container}>
-                                        {allScans(domainOrIps)}
+                                        {allScans(domainOrIps, dispatch)}
                                     </div>
                                 </div>
                             </div>

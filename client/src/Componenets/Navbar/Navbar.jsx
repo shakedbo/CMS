@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import { Link } from "react-router-dom";
 import { Consumer } from "../../Context";
 
@@ -37,7 +35,7 @@ export default function Navbar() {
     const common = (nameOrLink) => {
         return (
             <div className={classes.root}>
-                <AppBar position="static" style={{ backgroundColor: 'var(--mainBlue)', fontFamily: 'cursive' }}>
+                <AppBar position="static" style={{ backgroundColor: 'black', fontFamily: 'cursive' }}>
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
                             <Link to="/" className="btn" className={classes.btns}>CMS</Link>

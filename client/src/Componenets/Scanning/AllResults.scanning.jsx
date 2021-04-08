@@ -110,8 +110,9 @@ export default function AllResults(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {console.log("domainScans = ", domainScans)}
                     {domainScans && Array.isArray(domainScans) && domainScans.map((dom) => (
-                        <Row key={dom.asset} row={createRow(dom.asset, dom.systems)} />
+                        <Row key={dom.asset} row={createRow(dom.asset.split(',')[0], dom.systems)} />
                     ))}
                     {ipScans && Array.isArray(ipScans) && ipScans.map((ip) => (
                         <Row key={ip} row={{ name: ip, history: [] }} />

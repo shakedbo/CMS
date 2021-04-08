@@ -114,7 +114,7 @@ UserSchema.statics.refreshAccessToken = async function (accessToken, refreshToke
 
     jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, decode) => {
         if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
-            return callBack('Refresh token expired')
+            return callBack(ERRORS.TOKEN_EXPIRED)
         }
         else {
             // The refresh token is verified
@@ -142,8 +142,8 @@ UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshTo
         if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
             // We need to refresh the access token
             await UserModel.refreshAccessToken(accessToken, refreshToken, async (err, user) => {
-                if (err && err.toString() === 'Refresh token expired') {
-                    return callBack('Refresh token expired')
+                if (err && err.toString() === ERRORS.TOKEN_EXPIRED) {
+                    return callBack(ERRORS.TOKEN_EXPIRED)
                 }
                 if (err) {
                     return callBack(err);

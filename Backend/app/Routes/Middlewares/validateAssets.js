@@ -11,13 +11,13 @@ module.exports = () => {
         for (let domain_ip of domains_ips) {
             if (domain_ip[0] >= '0' && domain_ip[0] <= '9') {
                 // Must be an IP
-                if (domain_ip.match(new RegExp(R_IP)) === false) {
+                if (`${domain_ip}`.match(new RegExp(R_IP)) === false) {
                     return res.status(400).send({ error: "Invalid IP ADDRESS" });
                 }
             }
             else {
                 // Must be a domain
-                if (domain_ip.match(R_DOMAIN) === false) {
+                if (`${domain_ip}`.match(R_DOMAIN) === false) {
                     return res.status(400).send({ error: 'Invalid URL' });
                 }
             }
