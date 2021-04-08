@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Paper from "@material-ui/core/Paper";
@@ -7,8 +6,10 @@ import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import Hidden from "@material-ui/core/Hidden";
+import OrBenAbaProfile from "../../Images/orBenAbaProfile.jpg"
+import { Link } from "@material-ui/core";
+
 
 const styles = (theme) => ({
     layout: {
@@ -21,52 +22,51 @@ const styles = (theme) => ({
             marginRight: "auto"
         }
     },
-    toolbarMain: {
-        borderBottom: `1px solid ${theme.palette.grey[300]}`
-    },
-    toolbarTitle: {
-        flex: 1
-    },
-    toolbarSecondary: {
-        justifyContent: "space-between"
-    },
+
     mainFeaturedPost: {
-        backgroundColor: theme.palette.grey[800],
+        backgroundColor: 'black',
         color: theme.palette.common.white,
-        marginBottom: theme.spacing.unit * 4
+        marginBottom: theme.spacing.unit * 4,
+        fontFamily: 'cursive'
     },
     mainFeaturedPostContent: {
         padding: `${theme.spacing.unit * 6}px`,
         [theme.breakpoints.up("md")]: {
             paddingRight: 0
-        }
+        },
+        backgroundColor: 'black'
     },
     mainGrid: {
         marginTop: theme.spacing.unit * 3
     },
+    cardGrid: {
+    },
     card: {
-        display: "flex"
+        display: "flex",
+        marginBottom: "1rem",
+        backgroundColor: 'black',
+        fontFamily: 'cursive',
+        color: 'var(--azure)'
     },
     cardDetails: {
-        flex: 1
+        flex: 2
     },
-    cardMedia: {
-        width: 160
-    },
-    markdown: {
-        padding: `${theme.spacing.unit * 3}px 0`
-    },
-    sidebarAboutBox: {
-        padding: theme.spacing.unit * 2,
-        backgroundColor: theme.palette.grey[200]
-    },
-    sidebarSection: {
-        marginTop: theme.spacing.unit * 3
-    },
+
     footer: {
-        backgroundColor: theme.palette.background.paper,
-        marginTop: theme.spacing.unit * 4,
-        padding: `${theme.spacing.unit * 6}px 0`
+        backgroundColor: 'black',
+        padding: `${theme.spacing.unit * 2}px 0`,
+        color: 'var(--azure)',
+        fontWeight: 'lighter',
+        fontFamily: 'monospace'
+    },
+    icon: {
+        backgroundColor: 'transparent',
+        border: 'none',
+        color: 'var(--azure)',
+        padding: '12px 16px',
+        fontSize: '16px',
+        cursor: 'pointer',
+        outline: 'none'
     }
 });
 
@@ -75,18 +75,37 @@ const Authors = [
         creator: "Or Ben-Aba",
         profession: "Low level, Blockchain & FullStack",
         description:
-            "This is a wider card with supporting text below as a natural lead-in to additional content."
+            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
+            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
+        img: OrBenAbaProfile,
+        github: 'https://github.com/orbenaba',
+        twitter: 'https://twitter.com/or24647603',
+        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
     },
     {
         creator: "Or Ben-Aba",
         profession: "Low level, Blockchain & FullStack",
         description:
-            "This is a wider card with supporting text below as a natural lead-in to additional content."
+            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
+            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
+        img: OrBenAbaProfile,
+        github: 'https://github.com/orbenaba',
+        twitter: 'https://twitter.com/or24647603',
+        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
+    },
+    {
+        creator: "Or Ben-Aba",
+        profession: "Low level, Blockchain & FullStack",
+        description:
+            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
+            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
+        img: OrBenAbaProfile,
+        github: 'https://github.com/orbenaba',
+        twitter: 'https://twitter.com/or24647603',
+        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
     }
 ];
 
-
-const social = ["GitHub", "Twitter", "Facebook"];
 
 function Blog(props) {
     const { classes } = props;
@@ -101,11 +120,15 @@ function Blog(props) {
                         <Grid container>
                             <Grid item md={6}>
                                 <div className={classes.mainFeaturedPostContent}>
-                                    <Typography variant="display2" color="inherit" gutterBottom>
+                                    <Typography variant="display2" color="inherit" gutterBottom style={{ fontSize: '1.5rem' }}>
                                         Content Mangement System
                                     </Typography>
-                                    <Typography variant="headline" color="inherit" paragraph>
-                                        Our Application runs at the server side a lot of microserives
+                                    <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
+                                    </Typography>
+                                    <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
+                                        Our CMS communicate with few microservices which run at the backend,
+                                        gathering information about given IPs or Domains and displaying it at a nice GUI.
+                                        The activity of each user can be viewed any time.
                                    </Typography>
                                 </div>
                             </Grid>
@@ -115,66 +138,43 @@ function Blog(props) {
                     {/* Sub featured posts */}
                     <Grid container spacing={40} className={classes.cardGrid}>
                         {Authors.map((author) => (
-                            <Grid item key={author.name} xs={12} md={6}>
+                            <Grid item key={author.name} xs={24} md={12}>
                                 <Card className={classes.card}>
                                     <div className={classes.cardDetails}>
                                         <CardContent>
-                                            <Typography variant="headline">{author.creator}</Typography>
-                                            <Typography variant="subheading" color="textSecondary">
+                                            <Typography variant="headline" style={{ fontSize: '1.2rem' }}>
+                                                {author.creator}
+                                            </Typography>
+                                            <Typography variant="subheading" paragraph>
                                                 {author.profession}
                                             </Typography>
                                             <Typography variant="subheading" paragraph>
                                                 {author.description}
                                             </Typography>
-                                            <Typography variant="subheading" color="primary">
-                                                Continue reading...
+                                            <Typography variant="subheading" style={{ display: 'flex', justifyContent: 'center' }}>
+                                                <a href={author.github} target="_blank" className={classes.icon}><i class="fab fa-github fa-2x" style={{ marginRight: '1rem' }}></i></a>
+                                                <a href={author.twitter} target="_blank" className={classes.icon}><i class="fab fa-twitter fa-2x" style={{ marginRight: '1rem' }}></i></a>
+                                                <a href={author.linkedin} target="_blank" className={classes.icon}><i class="fab fa-linkedin fa-2x" style={{ marginRight: '1rem' }}></i></a>
                                             </Typography>
                                         </CardContent>
                                     </div>
                                     <Hidden xsDown>
-                                        <CardMedia
-                                            className={classes.cardMedia}
-                                            image={null}
-                                            title="Image title"
-                                        />
+                                        <img src={author.img} style={{ width: '12rem', height: '15rem' }}></img>
                                     </Hidden>
                                 </Card>
                             </Grid>
                         ))}
                     </Grid>
-                    {/* End sub featured posts */}
-                    <Grid container spacing={40} className={classes.mainGrid}>
-                        {/* Main content */}
-                        {/* End main content */}
-                        {/* Sidebar */}
-                        <Grid item xs={12} md={4}>
-                            <Typography
-                                variant="title"
-                                gutterBottom
-                                className={classes.sidebarSection}
-                            >
-                                Social
-              </Typography>
-                            {social.map((network) => (
-                                <Typography key={network}>{network}</Typography>
-                            ))}
-                        </Grid>
-                        {/* End sidebar */}
-                    </Grid>
                 </main>
             </div>
             {/* Footer */}
             <footer className={classes.footer}>
-                <Typography variant="title" align="center" gutterBottom>
-                    Footer
-        </Typography>
                 <Typography
                     variant="subheading"
                     align="center"
-                    color="textSecondary"
                     component="p"
                 >
-                    Something here to give the footer a purpose!
+                    All rights are reserved to Or Ben-Aba
         </Typography>
             </footer>
             {/* End footer */}
@@ -182,8 +182,5 @@ function Blog(props) {
     );
 }
 
-Blog.propTypes = {
-    classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(Blog);
