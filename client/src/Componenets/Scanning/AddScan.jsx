@@ -13,7 +13,8 @@ const useStyle = makeStyles((theme) => ({
         display: 'flex',
         boxSizing: 'border-box',
         borderRadius: '4px',
-        backgroundColor: 'var(--azure)',
+        backgroundColor: 'black',
+        color: 'var(--azure)',
         padding: '4px 5px',
         marginBottom: '10px',
         marginTop: '20px',
@@ -26,11 +27,11 @@ const useStyle = makeStyles((theme) => ({
         outline: 'none',
         textAlign: 'center',
         borderWidth: '0.2rem',
-        borderColor: 'var(--mainBlue)'
+        borderColor: 'black'
     },
 
     addInput: {
-        color: 'var(--mainBlue)',
+        color: 'black',
         border: 'none',
         padding: '20px',
         display: 'flex',
@@ -41,7 +42,7 @@ const useStyle = makeStyles((theme) => ({
         marginTop: '10px',
         cursor: 'pointer',
         '&:hover': {
-            color: 'var(--azure)'
+            color: 'var(--mainBlue)'
         }
     }
 }))

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Consumer } from "../../Context";
-import BigButton from "./BigButton";
 import Title from "../Shared/Title/Title";
 import { makeStyles } from "@material-ui/core/styles";
 import AddScan from "./AddScan";
@@ -10,13 +9,15 @@ import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
 import AllResults from "./AllResults.scanning";
-import { Button } from 'react-bootstrap'
 
 const useStyle = makeStyles((theme) => ({
     loading: {
-        margin: '0 auto',
-        // display: 'flex',
-        // justifyContent: 'center'
+        margin: '0 auto'
+    },
+    container: {
+        backgroundColor: 'var(--mainBlue)',
+        width: '60%',
+        borderRadius: '1rem'
     }
 }))
 
@@ -47,7 +48,6 @@ export default function Scanning() {
             try {
                 setIsLoading(true)
                 const res = await axios.post(ServerAddress + "api/asset/scan", { domainOrIps }, { withCredentials: true })
-                console.log("[+] res.data.results = ", res.data.results)
                 setScanResults(res.data.results)
                 setDisplayResults(true);
                 // clear the context assets
@@ -77,7 +77,7 @@ export default function Scanning() {
         return (
             <div>
                 <Title name="scan" title="results"></Title>
-                <button style={{ margin: '0 auto', display: 'flex', backgroundColor: 'var(--purpleBlue)', fontFamily: 'cursive', color: 'white', height: '3.3rem', fontSize: '2rem', cursor: 'pointer' }} onClick={closeTable}>Close Results</button>
+                <button style={{ margin: '0 auto', display: 'flex', backgroundColor: 'var(--mainBlue)', fontFamily: 'cursive', color: 'white', height: '3.3rem', fontSize: '2rem', cursor: 'pointer' }} onClick={closeTable}>Close Results</button>
                 <AllResults domainScans={JSON.stringify(scanResults.domainScans)} ipScans={JSON.stringify(scanResults.ipScans)}></AllResults>
             </div>
         )
@@ -94,7 +94,9 @@ export default function Scanning() {
                             <div style={{ display: 'flex' }}>
                                 <div style={{ margin: '0 25%', justifyContent: 'center' }}>
                                     <AddScan></AddScan>
-                                    {allScans(domainOrIps)}
+                                    <div className={classes.container}>
+                                        {allScans(domainOrIps)}
+                                    </div>
                                 </div>
                             </div>
                         </form>

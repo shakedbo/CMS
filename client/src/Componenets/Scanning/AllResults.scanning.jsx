@@ -35,7 +35,6 @@ const useRowStyles = makeStyles({
 });
 
 function createRow(asset, systems) {
-    console.log("systems = ", systems)
     return {
         asset,
         systems
@@ -50,12 +49,12 @@ function Row(props) {
     return (
         <React.Fragment>
             <TableRow className={classes.root}>
-                <TableCell style={{ backgroundColor: 'rgba(0,0,128,0.45)', textAlign: 'center', borderWidth: '0.2rem', borderColor: 'black', borderStyle: 'solid' }}>
-                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)} style={{ color: 'white', backgroundColor: 'var(--purpleBlue)' }}>
+                <TableCell style={{ backgroundColor: 'black', textAlign: 'center', borderWidth: '0.2rem', borderColor: 'var(--azure)', borderStyle: 'solid' }}>
+                    <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)} style={{ color: 'black', backgroundColor: 'var(--azure)' }}>
                         {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                     </IconButton>
                 </TableCell>
-                <TableCell component="th" scope="row" style={{ backgroundColor: 'var(--azure)', fontFamily: 'cursive', borderWidth: '0.2rem', borderColor: 'black', borderStyle: 'solid' }}>
+                <TableCell component="th" scope="row" style={{ backgroundColor: 'black', fontFamily: 'cursive', color: 'var(--azure)', borderWidth: '0.2rem', borderColor: 'black', borderStyle: 'solid', fontSize: '1rem' }}>
                     {row.asset}
                 </TableCell>
             </TableRow>
@@ -81,7 +80,9 @@ function Row(props) {
                                                 {systemRow.name}
                                             </TableCell>
                                             <TableCell style={{ fontFamily: 'cursive' }}>{systemRow.version}</TableCell>
-                                            <TableCell style={{ fontFamily: 'cursive' }}>{systemRow.categories}</TableCell>
+                                            <TableCell style={{ fontFamily: 'cursive' }}>{
+                                                systemRow.categories.join(", ")
+                                            }</TableCell>
                                         </TableRow>
                                     ))}
                                 </TableBody>
@@ -101,11 +102,11 @@ export default function AllResults(props) {
     console.log("domainScans = ", domainScans)
     return (
         <TableContainer component={Paper} style={{ marginBottom: '3rem', width: '75%', margin: '0 auto' }}>
-            <Table aria-label="collapsible table" style={{ borderWidth: '0.5rem', borderColor: 'var(--purpleBlue)', borderStyle: 'solid' }}>
+            <Table aria-label="collapsible table" style={{ borderWidth: '0.5rem', borderColor: 'var(--mainBlue)', borderStyle: 'solid' }}>
                 <TableHead>
                     <TableRow>
-                        <TableCell style={{ backgroundColor: 'var(--mainBlue)', borderWidth: '0.2rem', borderColor: 'black', borderStyle: 'solid' }} />
-                        <TableCell style={{ backgroundColor: 'var(--azure)', fontFamily: 'cursive', borderWidth: '0.2rem', borderColor: 'black', borderStyle: 'solid' }}>Asset</TableCell>
+                        <TableCell style={{ backgroundColor: 'black', borderWidth: '0.2rem', borderColor: 'var(--azure)', borderStyle: 'solid' }} />
+                        <TableCell style={{ backgroundColor: 'black', fontFamily: 'cursive', borderWidth: '0.2rem', borderColor: 'var(--azure)', borderStyle: 'solid', color: 'var(--azure)', fontWeight: 'bolder', fontSize: '1.5rem' }}>Asset</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>

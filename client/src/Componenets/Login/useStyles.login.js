@@ -3,7 +3,6 @@ export default makeStyles((theme) => ({
     materialUIInput: {
         display: 'block',
         boxSizing: 'border-box',
-        width: '100%',
         borderRadius: '40px',
         backgroundColor: 'var(--azure)',
         padding: '4px 5px',
