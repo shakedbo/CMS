@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     btns: {
         color: 'white',
         textDecoration: 'none',
-
+        fontFamily: 'cursive',
         '&:hover': {
             backgroundColor: 'var(--azure)',
             color: 'black',

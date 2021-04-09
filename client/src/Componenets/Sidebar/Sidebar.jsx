@@ -4,7 +4,6 @@ import React from "react";
 import { Consumer } from "../../Context";
 import { Link } from "react-router-dom";
 
-
 const Sidebar = ({ width, height }) => {
     const [xPosition, setX] = React.useState(-width);
 
@@ -27,17 +26,24 @@ const Sidebar = ({ width, height }) => {
                 if (user._id != null) {
                     displayedLinks = (
                         <div>
-                            <Link to="/logout">Log out</Link>
-                            <div></div>
+                            <div className="space"></div>
+                            <Link to="/" className="link">Account</Link>
+                            <div className="space"></div>
+                            <Link to="/logout" className="link">Log out</Link>
+                            <div className="space"></div>
+                            <Link to="/my-activity" className="link">Activity</Link>
+                            <div className="space"></div>
                         </div>
                     )
                 }
                 else {
                     displayedLinks = (
                         <div>
-                            <Link to="/login">Log in</Link>
-                            <div></div>
-                            <Link to="/register">Register</Link>
+                            <div className="space"></div>
+                            <Link to="/login" className="link">Log in</Link>
+                            <div className="space"></div>
+                            <Link to="/register" className="link">Register</Link>
+                            <div className="space"></div>
                         </div>
                     )
                 }

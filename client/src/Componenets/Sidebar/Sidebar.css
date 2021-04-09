@@ -4,8 +4,8 @@
     flex-direction: column;
     border-right: 1px solid;
     border-radius: 0;
-    border-color: #ec5990;
-    background-color: #f9cddd;
+    border-color:black;
+    background-color: black;
     transition: 0.8s ease;
 }
 
@@ -20,12 +20,37 @@
 
     outline: none;
     z-index: 1;
-    background-color: rgba(255, 4, 133, 0.3);
+    background-color: var(--purpleBlue);
     border-color: black;
+    border-width: 0.5rem;
     border-left: 0;
 }
 
 .content {
     margin: auto;
     justify-content: center;
+}
+
+.space {
+    margin-bottom: 0.7rem;
+    transform: translate(2px,10px);
+    border-top: 0.6rem solid;
+    border-color: var(--purpleBlue);
+    margin-left: -10rem;
+    margin-right: -1.7rem;
+}
+
+
+.link {
+    color: var(--azure);
+    font-size: 1.4rem;
+    font-family: cursive;
+    text-decoration: none;
+    border-radius: 20rem;
+}
+
+.link:hover {
+    border: 3px double;
+    color: white;
+    background-color: var(--purpleBlue);
 }

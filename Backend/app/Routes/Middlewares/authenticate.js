@@ -2,7 +2,7 @@
 const { UserModel } = require('../../Schemas/User');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../../Config/cookies.config');
 const { TOKEN_EXPIRED } = require('../../../../client/src/Magic/Errors.magic');
-
+// flag is used to distinguish between a request with cookies or without em
 module.exports = (flag = false) => {
     return async (req, res, next) => {
         try {
