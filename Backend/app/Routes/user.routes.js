@@ -3,9 +3,9 @@ const express = require('express');
 
 const validateUser = require('./Middlewares/validateUser');
 const authenticate = require('./Middlewares/authenticate');
+const noDup = require('./Middlewares/validateNoDup');
 
-
-const { signup, deleteUser, login, logout } = require('../Controllers/user.controllers')
+const { signup, deleteUser, login, logout, changeDetails } = require('../Controllers/user.controllers')
 
 
 module.exports = function routes(app) {
@@ -17,8 +17,6 @@ module.exports = function routes(app) {
     // we will escape over the validateUser middleWare (which verifies password & username)
     router.post('/login', authenticate(), validateUser(true), login);
 
-    //    router.post('/refresh', refresh);
-
     router.delete('/delete-user', deleteUser);
 
     // A route to check if the user cookies are authenticated
@@ -27,6 +25,8 @@ module.exports = function routes(app) {
     });
 
     router.post('/logout', authenticate(true), logout);
+
+    router.post('/change-details', authenticate(true), noDup(), changeDetails);
 
     app.use('/api/user', router);
 

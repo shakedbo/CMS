@@ -23,7 +23,7 @@ module.exports = function routes(app) {
 
     router.post('/scan', validateAssets(), authenticate(), scan)
 
-    router.get('/get-all-user-scans', authenticate(), getAllUserScans)
+    router.get('/get-all-user-scans', authenticate(), getAllUserScans);
 
     app.use('/api/asset', router);
 }

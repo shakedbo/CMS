@@ -28,6 +28,7 @@ export default function Login() {
             history.push('/');
             handleChangeUser(response.data.user)
         } catch (err) {
+            console.log("err = ", err)
             // To do - Take care of invalid username/ password 400 response errors
             setDisplayedError(err.response.data.error);
         }

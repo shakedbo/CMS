@@ -37,13 +37,13 @@ async function login(req, res) {
             res.cookie(ACCESS_TOKEN, user.accessToken, { httpOnly: false });
             res.cookie(REFRESH_TOKEN, user.refreshToken, { /*secure: true,*/ httpOnly: true });
             res.status(200).send({ user });
-            //     console.log("[+] Response = ", res)
         }
     } catch (error) {
-        console.log('[-] error:', error)
         return res.status(400).send({ error });
     }
 }
+
+
 
 
 async function deleteUser(req, res) {
@@ -63,8 +63,22 @@ async function logout(req, res) {
         res.clearCookie(REFRESH_TOKEN);
         res.status(200).send({ message: "Cookies were deleted in success" });
     } catch (error) {
-        res.status(400).send({ error: "Some error in logout ..." })
+        return res.status(400).send({ error })
     }
 }
 
-module.exports = { signup, deleteUser, login, logout };
+async function changeDetails(req, res) {
+    try {
+        let newUsername = req.body.username, newPassword = req.body.password, newEmail = req.body.email,
+            accessToken = req.cookies.jwt_access_token, refresh_token = req.cookies.jwt_refresh_token;
+        // newUsername, newPassword, newEmail are already been validated
+        const user = await UserModel.changeDetails(newUsername, newPassword, newEmail, accessToken, refresh_token)
+        await user.save();
+        console.log("[+] New user:\n", user)
+        return res.status(200).send({ user })
+    } catch (error) {
+        return res.status(400).send({ error })
+    }
+}
+
+module.exports = { signup, deleteUser, login, logout, changeDetails };

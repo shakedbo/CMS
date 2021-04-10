@@ -31,6 +31,7 @@ export default function BigButton(props) {
             size="large"
             type="secondary"
             className={classes.btnDesign}
+            onClick={() => props.clickEvent ? props.clickEvent() : {}}
         >
             {props.text}
         </button>

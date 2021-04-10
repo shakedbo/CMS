@@ -1,6 +1,6 @@
 // Authenticate the user with its cookies'
 const { UserModel } = require('../../Schemas/User');
-const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../../Config/cookies.config');
+const { ACCESS_TOKEN } = require('../../Config/cookies.config');
 const { TOKEN_EXPIRED } = require('../../../../client/src/Magic/Errors.magic');
 // flag is used to distinguish between a request with cookies or without em
 module.exports = (flag = false) => {
@@ -9,6 +9,7 @@ module.exports = (flag = false) => {
             let accessToken = req.cookies.jwt_access_token;
             let refreshToken = req.cookies.jwt_refresh_token;
             // If there is no token stored in cookies, the request is unauthorized
+
             await UserModel.findByTokenOrRefresh(accessToken, refreshToken, (err, user) => {
                 // Refresh Token expired or something
                 if (err !== null) {

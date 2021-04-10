@@ -114,7 +114,7 @@ UserSchema.statics.refreshAccessToken = async function (accessToken, refreshToke
 
     jwt.verify(refreshToken, REFRESH_TOKEN_SECRET, async (err, decode) => {
         if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
-            return callBack(ERRORS.TOKEN_EXPIRED)
+            return callBack('Refresh token expired')
         }
         else {
             // The refresh token is verified
@@ -142,8 +142,8 @@ UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshTo
         if (err && err.toString().includes('TokenExpiredError: jwt expired')) {
             // We need to refresh the access token
             await UserModel.refreshAccessToken(accessToken, refreshToken, async (err, user) => {
-                if (err && err.toString() === ERRORS.TOKEN_EXPIRED) {
-                    return callBack(ERRORS.TOKEN_EXPIRED)
+                if (err && err.toString() === 'Refresh token expired') {
+                    return callBack('Refresh token expired')
                 }
                 if (err) {
                     return callBack(err);
@@ -167,7 +167,36 @@ UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshTo
     })
 }
 
-// Help Function
+/**
+ * @param {new data} newUsername_newPassword_newEmail
+ * @param {used to authenticate the user} accessToken 
+ */
+/*
+UserSchema.statics.changeDetails = async function (newUsername, newPassword, newEmail, accessToken, refresh_token) {
+    await UserModel.findByTokenOrRefresh(accessToken, refresh_token, async (err, user) => {
+        if (err) {
+            throw err;
+        }
+        let newRefreshToken = createToken({ username: newUsername, newEmail }, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
+        let newAccessToken = createToken({ username: newUsername, newEmail }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
+        let salt = crypto.randomBytes(16).toString('hex');
+        // pbkdf2 algorithm is used to generate and validate hashes 
+        let newPasswordHash = crypto.pbkdf2Sync(newPassword, salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
+        return await UserModel.findOneAndUpdate({ "username": user.username }, {
+            "username": newUsername, "email": newEmail, "password_hash": newPasswordHash, "refreshToken": newRefreshToken, "accessToken": newAccessToken, "salt": salt
+        })
+    })
+}
+
+// Help Functions
+// Check if the new email and username are already exist in the DataBase
+UserSchema.statics.findDups = async function (oldUsername, newUsername, oldEmail, newEmail) {
+    if (oldEmail === newEmail && oldUsername === newUsername) {
+        return true;
+    }
+
+}*/
+
 function createToken(payload, secret, expiresIn) {
     return jwt.sign(payload, secret, {
         algorithm: "HS256",
