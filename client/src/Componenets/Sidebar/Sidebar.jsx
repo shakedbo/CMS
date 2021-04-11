@@ -29,8 +29,6 @@ const Sidebar = ({ width, height }) => {
                             <div className="space"></div>
                             <Link to="/account" className="link">Account</Link>
                             <div className="space"></div>
-                            <Link to="/logout" className="link">Log out</Link>
-                            <div className="space"></div>
                             <Link to="/my-activity" className="link">Activity</Link>
                             <div className="space"></div>
                             <Link to="/scanning" className="link">Scan</Link>

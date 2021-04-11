@@ -208,6 +208,10 @@ export function Provider(props) {
         setDomainOrIps(reducer(domainOrIps, action))
     }
 
+    const resetContext = () => {
+        setUser({});
+        setDomainOrIps([])
+    }
 
     useEffect(() => {
         async function fetchData() {
@@ -217,7 +221,6 @@ export function Provider(props) {
                 setUser(result)
             }
             else {
-                setIsLoaded(false);
                 history.push('/login')
             }
             setIsLoaded(false);
@@ -239,7 +242,7 @@ export function Provider(props) {
     else
         return (
             <AlertProvider template={AlertTemplate} {...options}>
-                <Context.Provider value={{ state: { user, isLoaded, domainOrIps, dispatch }, handleChangeUser }}>
+                <Context.Provider value={{ state: { user, isLoaded, domainOrIps, dispatch }, handleChangeUser, resetContext }}>
                     {props.children}
                 </Context.Provider >
             </AlertProvider>

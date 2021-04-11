@@ -17,7 +17,7 @@ module.exports = function routes(app) {
     // we will escape over the validateUser middleWare (which verifies password & username)
     router.post('/login', authenticate(), validateUser(true), login);
 
-    router.delete('/delete-user', deleteUser);
+    router.delete('/delete', authenticate(true), deleteUser);
 
     // A route to check if the user cookies are authenticated
     router.post('/is-authenticated', authenticate(true), (req, res) => {

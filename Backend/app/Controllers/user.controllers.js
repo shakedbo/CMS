@@ -25,7 +25,7 @@ async function signup(req, res) {
 async function login(req, res) {
     try {
         // If the token sent within the request so there is no point to login again
-        if (res.locals.hasToken === true) {
+        if (res.locals.hasToken) {
             res.status(200).send({ user: req.user });
         }
         else {
@@ -48,9 +48,15 @@ async function login(req, res) {
 
 async function deleteUser(req, res) {
     try {
-        const username = req.body.username, password = req.body.password;
-        const deleted = await UserModel.deleteUser(username, password);
-        return res.send({ User_deleted_successfully: deleted })
+        if (res.locals.hasToken) {
+            await UserModel.deleteUserByUsername(res.locals.user.username);
+            res.clearCookie(ACCESS_TOKEN);
+            res.clearCookie(REFRESH_TOKEN);
+            return res.status(200).send({ success: "Success in deleting user account" })
+        }
+        else {
+            throw "No cookies specified"
+        }
     } catch (error) {
         return res.status(400).send({ error });
     }
@@ -61,7 +67,7 @@ async function logout(req, res) {
         // Clear the cookies before log out
         res.clearCookie(ACCESS_TOKEN);
         res.clearCookie(REFRESH_TOKEN);
-        res.status(200).send({ message: "Cookies were deleted in success" });
+        return res.status(200).send({ message: "Cookies were deleted in success" });
     } catch (error) {
         return res.status(400).send({ error })
     }

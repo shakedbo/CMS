@@ -54,9 +54,14 @@ UserSchema.methods.validatePassword = function (password) {
 /**
  * Deleting existed user with its password & username
  */
-UserSchema.statics.deleteUser = async function (username, password) {
-    const userM = await UserModel.authenticate(username, password);
-    await userM.delete();
+UserSchema.statics.deleteUserByUsername = async function (username) {
+    let userDeleted = await UserModel.findOne({ "username": username });
+    if (userDeleted) {
+        await userDeleted.delete();
+    }
+    else {
+        throw "User not exist"
+    }
 }
 
 /**
