@@ -7,7 +7,6 @@
 const mongoose = require('mongoose');
 const { DomainScanModel, DomainScanSchema } = require('./DomainScan');
 const { IPScanModel, IPScanSchema } = require('./IPScan');
-const { SystemModel, SystemSchema } = require('./System');
 
 
 // ToDo: add log date & time
@@ -42,7 +41,23 @@ BatchOfQueriesSchema.methods.addDomainScan = async function (domainAsset, domain
     }
 }
 
-
+/**
+ * @param {the domain to be searched} domain2Find 
+ */
+BatchOfQueriesSchema.statics.isExisted = async function (domain2Find) {
+    try {
+        const doms = await BatchOfQueriesModel.find({}).select("domainScans");
+        for (let dom of doms) {
+            let i = dom.domainScans.findIndex(obj => obj.asset === domain2Find);
+            if (i >= 0) {
+                return dom.domainScans[i];
+            }
+        }
+        return false;
+    } catch (err) {
+        console.error(err);
+    }
+}
 
 const BatchOfQueriesModel = mongoose.model('BatchOfQueries', BatchOfQueriesSchema);
 

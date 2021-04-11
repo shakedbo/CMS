@@ -8,8 +8,8 @@ import { useAlert } from 'react-alert'
 import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
-import AllResults from "./AllResults.scanning";
 import { DIP } from "../../Magic/Asset.magic";
+import ResultsTable from "../Shared/Results/ResultsTable.shared";
 
 const useStyle = makeStyles((theme) => ({
     loading: {
@@ -91,7 +91,7 @@ export default function Scanning() {
             <div>
                 <Title name="scan" title="results"></Title>
                 <button style={{ margin: '0 auto', display: 'flex', backgroundColor: 'var(--mainBlue)', fontFamily: 'cursive', color: 'white', height: '3.3rem', fontSize: '2rem', cursor: 'pointer' }} onClick={closeTable}>Close Results</button>
-                <AllResults domainScans={JSON.stringify(scanResults.domainScans)} ipScans={JSON.stringify(scanResults.ipScans)}></AllResults>
+                <ResultsTable domainScans={JSON.stringify(scanResults.domainScans)} ipScans={JSON.stringify(scanResults.ipScans)}></ResultsTable>
             </div>
         )
     }

@@ -217,6 +217,7 @@ export function Provider(props) {
                 setUser(result)
             }
             else {
+                setIsLoaded(false);
                 history.push('/login')
             }
             setIsLoaded(false);

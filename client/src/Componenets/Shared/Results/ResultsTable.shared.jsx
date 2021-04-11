@@ -1,15 +1,3 @@
-/*import React from "react";
-
-export default function AllResults(props) {
-    console.log("[+] props = ", props)
-    return (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
-            {props.domainScans && Array.isArray(props.domainScans) && props.domainScans.map(dom => <DIPResult dip={dom}></DIPResult>)}
-            {props.ipScans && Array.isArray(props.ipScans) && props.ipScans.map(ip => <DIPResult dip={ip}></DIPResult>)}
-        </div>
-    )
-}*/
-
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
@@ -95,11 +83,10 @@ function Row(props) {
     );
 }
 
-export default function AllResults(props) {
+export default function ResultsTable(props) {
     // const ipScans = JSON.parse(props.ipScans);
     const ipScans = null;
     const domainScans = JSON.parse(props.domainScans);
-    console.log("domainScans = ", domainScans)
     return (
         <TableContainer component={Paper} style={{ marginBottom: '3rem', width: '75%', margin: '0 auto' }}>
             <Table aria-label="collapsible table" style={{ borderWidth: '0.5rem', borderColor: 'var(--mainBlue)', borderStyle: 'solid' }}>
@@ -110,7 +97,6 @@ export default function AllResults(props) {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {console.log("domainScans = ", domainScans)}
                     {domainScans && Array.isArray(domainScans) && domainScans.map((dom) => (
                         <Row key={dom.asset} row={createRow(dom.asset.split(',')[0], dom.systems)} />
                     ))}

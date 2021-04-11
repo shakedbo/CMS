@@ -18,7 +18,6 @@ async function scanDomain(domain) {
             // DOMAIN NOT FOUND
             return [];
         }
-        console.log("similar tech:\n", response.data.technologies)
         return response.data.technologies;
     } catch (err) {
         // Maybe we took advantage of the quota - "{"Message":"Rate limit exceeded"}"

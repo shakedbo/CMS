@@ -37,7 +37,6 @@ async function scanDomain(domain_ip) {
         await wappalyzer.init()
 
         const results = await wappalyzer.open(domain_ip_formatted).analyze();
-        console.log("results,technologies: = ", results.technologies)
         return results.technologies
 
     } catch (error) {
