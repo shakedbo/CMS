@@ -5,8 +5,12 @@ import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic"
+import ReactLoading from "react-loading";
 
 const useStyle = makeStyles((theme) => ({
+    loading: {
+        margin: '0 auto'
+    },
     title: {
         textTransform: "uppercase",
         color: 'red'
@@ -54,15 +58,15 @@ const useStyle = makeStyles((theme) => ({
 export default function Account() {
     const history = useHistory()
     const classes = useStyle();
-    const [isLoaded, setIsLoaded] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [greet, setGreet] = useState("");
-    const [totalScans, setTotalScans] = useState(0);
+    const [recapScans, setRecapScans] = useState(0);
     useEffect(() => {
         (async () => {
-            setIsLoaded(true)
-            const res = await axios.get(ServerAddress + 'api/asset/total-scans', { withCredentials: true })
-            console.log('[+] res = ', res)
-            setIsLoaded(false)
+            setIsLoading(true)
+            //const res = await axios.get(ServerAddress + 'api/asset/recap-user-scans', { withCredentials: true })
+            //console.log('[+] res = ', res)
+            setIsLoading(false)
         })()
 
     }, [])
@@ -117,6 +121,10 @@ export default function Account() {
         }
     }
 
+    if (isLoading) {
+        return <ReactLoading color={'var(--mainBlue)'} height={'10rem'} width={'10rem'} type={'balls'} className={classes.loading}></ReactLoading>
+    }
+
     return (
         <Consumer>
             {value => {
@@ -135,7 +143,7 @@ export default function Account() {
                             <div className={classes.recap}>
                                 <h1 className={classes.title}>Account recap</h1>
                                 <h1>Created at: {createdAt(user.createdAt)}</h1>
-                                <h1>Total scans: {totalScans}</h1>
+                                <h1>Total scans: {recapScans}</h1>
                                 <div className={classes.btns}>
                                     <button className={classes.btn} onClick={() => onDelete(resetContext)}>Delete</button>
                                     <button className={classes.btn} onClick={onLogout}>Log out</button>

@@ -4,9 +4,19 @@ import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ResultsTable from "../Shared/Results/ResultsTable.shared";
 import Title from "../Shared/Title/Title";
+import ReactLoading from 'react-loading';
+import { makeStyles } from "@material-ui/styles";
+
+const useStyle = makeStyles((theme) => ({
+    loading: {
+        margin: '0 auto',
+        marginTop: '5rem'
+    }
+}))
 
 
 export default function Activity() {
+    const classes = useStyle();
     const [isLoading, setIsLoading] = useState(true);
     const [scans, setScans] = useState([]);
 
@@ -27,7 +37,7 @@ export default function Activity() {
     }, [])
 
     if (isLoading) {
-        return <h1>Loading ...</h1>
+        return <ReactLoading color={'var(--mainBlue)'} height={'10rem'} width={'10rem'} type={'balls'} className={classes.loading}></ReactLoading>
     }
     return (
         <Consumer>

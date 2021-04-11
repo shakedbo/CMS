@@ -68,17 +68,16 @@ async function getAllUserScans(req, res) {
     }
 }
 
-async function getScanAsset(req, res) {
+async function recapAboutUserScans(req, res) {
+    try {
 
+    } catch (err) {
+
+    }
 }
 
-async function deleteScanAsset(req, res) {
-
-}
 
 
 
 
-
-
-module.exports = { scan, getScanAsset, deleteScanAsset, getAllUserScans };
+module.exports = { scan, recapAboutUserScans, getAllUserScans };

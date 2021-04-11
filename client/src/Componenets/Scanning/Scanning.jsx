@@ -8,7 +8,6 @@ import { useAlert } from 'react-alert'
 import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ReactLoading from 'react-loading';
-import { DIP } from "../../Magic/Asset.magic";
 import ResultsTable from "../Shared/Results/ResultsTable.shared";
 
 const useStyle = makeStyles((theme) => ({
@@ -32,10 +31,8 @@ export default function Scanning() {
 
 
     const allScans = (domainOrIps, dispatch) => {
-        console.log("domainOrIps = ", domainOrIps)
         if (domainOrIps.length !== 0) {
             return domainOrIps && Array.isArray(domainOrIps) && domainOrIps.map(dip => {
-                { console.log("dip = ", dip) }
                 return <DomainOrIp domainOrIP={dip} dispatch={dispatch}></DomainOrIp>
             })
         }

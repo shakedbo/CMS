@@ -8,6 +8,8 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Hidden from "@material-ui/core/Hidden";
 import OrBenAbaProfile from "../../Images/orBenAbaProfile.jpg"
+import ShakedBozikovskyProfile from "../../Images/ShakedBozikovskyProfile.jpg";
+
 
 const styles = (theme) => ({
     layout: {
@@ -71,7 +73,7 @@ const styles = (theme) => ({
 const Authors = [
     {
         creator: "Or Ben-Aba",
-        profession: "Low level, Blockchain & FullStack",
+        profession: "Low level, Blockchain & Full stack",
         description:
             `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
             Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
@@ -81,26 +83,14 @@ const Authors = [
         linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
     },
     {
-        creator: "Or Ben-Aba",
-        profession: "Low level, Blockchain & FullStack",
+        creator: "Shaked Bozikovsky",
+        profession: "Full stack",
         description:
-            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
-            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
-        img: OrBenAbaProfile,
-        github: 'https://github.com/orbenaba',
+            `Proven technical skills with a diverse background. Highly motivated and a fast learner`,
+        img: ShakedBozikovskyProfile,
+        github: 'https://github.com/shakedbo',
         twitter: 'https://twitter.com/or24647603',
-        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
-    },
-    {
-        creator: "Or Ben-Aba",
-        profession: "Low level, Blockchain & FullStack",
-        description:
-            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
-            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
-        img: OrBenAbaProfile,
-        github: 'https://github.com/orbenaba',
-        twitter: 'https://twitter.com/or24647603',
-        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
+        linkedin: 'https://www.linkedin.com/in/shaked-bozikovsky-678034186'
     }
 ];
 
