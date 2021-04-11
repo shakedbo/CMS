@@ -3,6 +3,8 @@ import { Consumer } from "../../Context";
 import axios from "axios";
 import { ServerAddress } from "../../Magic/Config.magic";
 import ResultsTable from "../Shared/Results/ResultsTable.shared";
+import Title from "../Shared/Title/Title";
+
 
 export default function Activity() {
     const [isLoading, setIsLoading] = useState(true);
@@ -12,8 +14,12 @@ export default function Activity() {
         async function fetchData() {
             setIsLoading(true);
             const results = await axios.get(ServerAddress + 'api/asset/get-all-user-scans', { withCredentials: true })
-            setScans(results.data.scans);
-            console.log("[+] results = ", results.data.scans)
+            // Removing duplicates
+            let uniq = {}
+            for (let res of results.data.scans) {
+                uniq[res.asset] = res;
+            }
+            setScans(Object.values(uniq));
             setIsLoading(false)
         }
 
@@ -27,7 +33,10 @@ export default function Activity() {
         <Consumer>
             {value => {
                 return (
-                    <ResultsTable domainScans={JSON.stringify(scans)}></ResultsTable>
+                    <div>
+                        <Title name="Browse" title="activity"></Title>
+                        <ResultsTable domainScans={JSON.stringify(scans)}></ResultsTable>
+                    </div>
                 )
             }}
         </Consumer>

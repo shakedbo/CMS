@@ -9,6 +9,7 @@ import Logout from './Componenets/Logout/logout';
 import Sidebar from "./Componenets/Sidebar/Sidebar";
 import Activity from "./Componenets/Activity/Activity";
 import Scanning from "./Componenets/Scanning/Scanning";
+import Account from "./Componenets/Account/Account";
 import "./App.css";
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -28,6 +29,7 @@ function App() {
             <Route exact path="/logout" component={Logout}></Route>
             <Route exact path="/my-activity" component={Activity}></Route>
             <Route exact path="/scanning" component={Scanning}></Route>
+            <Route exact path="/account" component={Account}></Route>
             <Route path='*' render={() =>
             (
               <Redirect to="/" />

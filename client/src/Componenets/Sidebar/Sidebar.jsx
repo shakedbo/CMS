@@ -27,11 +27,13 @@ const Sidebar = ({ width, height }) => {
                     displayedLinks = (
                         <div>
                             <div className="space"></div>
-                            <Link to="/" className="link">Account</Link>
+                            <Link to="/account" className="link">Account</Link>
                             <div className="space"></div>
                             <Link to="/logout" className="link">Log out</Link>
                             <div className="space"></div>
                             <Link to="/my-activity" className="link">Activity</Link>
+                            <div className="space"></div>
+                            <Link to="/scanning" className="link">Scan</Link>
                             <div className="space"></div>
                         </div>
                     )
