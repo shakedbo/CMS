@@ -70,9 +70,12 @@ async function getAllUserScans(req, res) {
 
 async function recapAboutUserScans(req, res) {
     try {
+        const username = req.user.username;
+        const totalScans = (await BatchOfQueriesModel.find({ username })).length;
 
-    } catch (err) {
-
+        return res.status(200).send({ results: { totalScans } })
+    } catch (error) {
+        return res.status(400).send({ error })
     }
 }
 

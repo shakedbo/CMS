@@ -22,7 +22,8 @@ const UserSchema = new mongoose.Schema({
     password_hash: String,
     salt: String,
     accessToken: String,
-    refreshToken: String
+    refreshToken: String,
+    oldPasswords: [String]
 }, { timestamps: true });
 
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });

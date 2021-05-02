@@ -1,6 +1,7 @@
 // true specifies NOT_MAIL flag
 const { INVALID_USERNAME, INVALID_PASSWORD, INVALID_EMAIL } = require('../../../../client/src/Magic/Errors.magic');
 const { R_USERNAME, R_PASSWORD, R_EMAIL } = require('../../../../client/src/Magic/Regex.magic');
+const IsCommonPassword = require('../../Help-Functions/CheckIfPasswordInList');
 // flag specifices With out mail 
 module.exports = (flag = false) => {
     return (req, res, next) => {
@@ -15,6 +16,9 @@ module.exports = (flag = false) => {
                     return res.status(401).send(res.locals.unauthorized);
                 }
                 return res.status(400).send({ error: flag ? 'Username & password are required fields' : 'Username, password & email are required fields' });
+            }
+            if (IsCommonPassword(password)) {
+                return res.status(400).send({ error: "Too week password; Some dictionary attack might be happened :(" })
             }
             if (!username.match(R_USERNAME)) {
                 return res.status(400).send({ error: INVALID_USERNAME });
