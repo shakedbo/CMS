@@ -1,5 +1,6 @@
 const { UserModel } = require('../Schemas/User');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../Config/cookies.config');
+const validateEmail = require('../Routes/Middlewares/validateEmail');
 
 async function signup(req, res) {
     try {
@@ -20,6 +21,16 @@ async function signup(req, res) {
         }
     }
 }
+
+async function forgotPassword(req, res) {
+    const email = req.body.email
+    const validEmail = await validateEmail(email)
+    const link = "http://localhost:3000/l"
+    console.log(validEmail, email)
+    
+    
+}
+
 
 // After login, we renewing the tokens
 async function login(req, res) {
@@ -42,8 +53,6 @@ async function login(req, res) {
         return res.status(400).send({ error });
     }
 }
-
-
 
 
 async function deleteUser(req, res) {
@@ -87,4 +96,4 @@ async function changeDetails(req, res) {
     }
 }
 
-module.exports = { signup, deleteUser, login, logout, changeDetails };
+module.exports = { signup, deleteUser, login, logout, changeDetails, forgotPassword };

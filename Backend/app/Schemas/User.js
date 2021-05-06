@@ -51,6 +51,12 @@ UserSchema.methods.validatePassword = function (password) {
     return this.password_hash === password_hash;
 };
 
+UserSchema.methods.validateEmail = function (email) {
+
+    return this.email === email;
+};
+
+
 /**
  * Deleting existed user with its password & username
  */

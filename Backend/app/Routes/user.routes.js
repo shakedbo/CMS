@@ -5,7 +5,7 @@ const validateUser = require('./Middlewares/validateUser');
 const authenticate = require('./Middlewares/authenticate');
 const noDup = require('./Middlewares/validateNoDup');
 
-const { signup, deleteUser, login, logout, changeDetails } = require('../Controllers/user.controllers')
+const { signup, deleteUser, login, logout, changeDetails, forgotPassword } = require('../Controllers/user.controllers');
 
 
 module.exports = function routes(app) {
@@ -27,6 +27,8 @@ module.exports = function routes(app) {
     router.post('/logout', authenticate(true), logout);
 
     router.post('/change-details', authenticate(true), noDup(), changeDetails);
+
+    router.post('/forgot-password', forgotPassword );
 
     app.use('/api/user', router);
 
