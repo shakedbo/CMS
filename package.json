@@ -1,0 +1,8 @@
+{
+    "scripts": {
+        "dev": "concurrently \"node .\\Backend\\server.js\" \"npm run start .\\client  \""
+    },
+    "dependencies": {
+        "concurrently": "^6.0.2"
+    }
+}

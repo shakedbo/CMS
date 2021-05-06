@@ -64,8 +64,8 @@ export default function Account() {
     useEffect(() => {
         (async () => {
             setIsLoading(true)
-            //const res = await axios.get(ServerAddress + 'api/asset/recap-user-scans', { withCredentials: true })
-            //console.log('[+] res = ', res)
+            const res = (await axios.get(ServerAddress + 'api/asset/recap-user-scans', { withCredentials: true })).data.results;
+            setRecapScans(res.totalScans)
             setIsLoading(false)
         })()
 
@@ -131,7 +131,6 @@ export default function Account() {
                 const { user } = value.state;
                 const { resetContext } = value
                 greeting(user.username)
-                console.log("[+] user._id - ", user._id)
                 if (user._id == null) {
                     return <h1>Please login</h1>
                 }
