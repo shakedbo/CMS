@@ -4,8 +4,9 @@ const express = require('express');
 const validateUser = require('./Middlewares/validateUser');
 const authenticate = require('./Middlewares/authenticate');
 const noDup = require('./Middlewares/validateNoDup');
+const { validateEmailToken } = require('./Middlewares/validateEmailToken');
 
-const { signup, deleteUser, login, logout, changeDetails, forgotPassword } = require('../Controllers/user.controllers');
+const { signup, deleteUser, login, logout, changeDetails, forgotPassword, resetPassword } = require('../Controllers/user.controllers');
 
 
 module.exports = function routes(app) {
@@ -28,8 +29,11 @@ module.exports = function routes(app) {
 
     router.post('/change-details', authenticate(true), noDup(), changeDetails);
 
-    router.post('/forgot-password', forgotPassword );
+    router.post('/forgot-password', forgotPassword);
 
+    router.post('/validate-change-password', validateEmailToken, (req, res) => res.sendStatus(200));
+
+    router.post('/reset-password', validateEmailToken, resetPassword)
     app.use('/api/user', router);
 
     app.post('*', (req, res) => res.status(404).send({ notFound: 'Status code 404' }));

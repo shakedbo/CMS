@@ -1,6 +1,18 @@
 const { UserModel } = require('../Schemas/User');
 const { ACCESS_TOKEN, REFRESH_TOKEN } = require('../Config/cookies.config');
 const validateEmail = require('../Routes/Middlewares/validateEmail');
+const nodemailer = require('nodemailer');
+const { saveToken, useToken } = require('../Microservices/ValidToken')
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'team5risk@gmail.com',
+        pass: 'TRK12345!'
+    }
+});
+
+
 
 async function signup(req, res) {
     try {
@@ -21,15 +33,54 @@ async function signup(req, res) {
         }
     }
 }
-
+//If the email is exists, a link to reset password will be sent to the user email 
 async function forgotPassword(req, res) {
     const email = req.body.email
     const validEmail = await validateEmail(email)
-    const link = "http://localhost:3000/l"
-    console.log(validEmail, email)
-    
-    
+
+    if (!validEmail) {
+        res.sendStatus(403)
+        return
+    }
+
+    const token = require('crypto').randomBytes(48).toString('hex');
+    saveToken(token, email)
+    const link = `http://localhost:3000/reset-password?token=${token}&email=${email}`
+
+    var mailOptions = {
+        from: 'team5risk@gmail.com',
+        to: email,
+        subject: 'Forget Password',
+        text: link
+    };
+
+    try {
+        const info = transporter.sendMail(mailOptions);
+        console.log('Email sent: ' + info.response);
+    }
+    catch (error) {
+        console.log(error);
+        res.sendStatus(400)
+    }
+    res.sendStatus(200)
+    //console.log(validEmail, email, token)
+
 }
+
+async function resetPassword(req, res) {
+    const { password, email, token } = req.body
+    try {
+        console.log("in reset-password: ", email)
+        const user = await UserModel.changePassword(password, email)
+        useToken(token, email)
+        console.log("[+] New user:\n", user)
+        return res.status(200).send({ user })
+    } catch (error) {
+        return res.status(400).send({ error })
+    }
+}
+
+
 
 
 // After login, we renewing the tokens
@@ -96,4 +147,4 @@ async function changeDetails(req, res) {
     }
 }
 
-module.exports = { signup, deleteUser, login, logout, changeDetails, forgotPassword };
+module.exports = { signup, deleteUser, login, logout, changeDetails, forgotPassword, resetPassword };

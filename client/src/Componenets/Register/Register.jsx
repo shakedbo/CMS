@@ -102,6 +102,7 @@ export default function Register() {
                                 pattern={REGEX.R_PASSWORD}
                                 title={ERRORS.INVALID_PASSWORD}
                                 autoComplete="password"
+                                type={'password'}
                             />
                             <label className={classes.formLabel}>Confirm Password</label>
                             <input
@@ -113,6 +114,7 @@ export default function Register() {
                                 pattern={REGEX.R_PASSWORD}
                                 title={ERRORS.INVALID_PASSWORD}
                                 autoComplete="password"
+                                type={'password'}
                             />
                             <label className={classes.formLabel}>Email</label>
                             <input

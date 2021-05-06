@@ -83,6 +83,7 @@ export default function Login() {
                                 required
                                 pattern={REGEX.R_PASSWORD}
                                 title={ERRORS.INVALID_PASSWORD}
+                                type={'password'}
                             />
                             {error}
                             <Link to="/register" className={classes.linkTo}>Sign up</Link>

@@ -28,7 +28,7 @@ const UserSchema = new mongoose.Schema({
 UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 
 // Using mongo hooks to save the password as a hash in the DataBase and not as plain text
-UserSchema.pre("save", function () {
+UserSchema.pre(["updateOne", "save"], function () {
     // Generate salt only when the password_hash has changed
     if (this.isModified("password_hash")) {
         this.salt = crypto.randomBytes(16).toString('hex');
@@ -69,6 +69,26 @@ UserSchema.statics.deleteUserByUsername = async function (username) {
         throw "User not exist"
     }
 }
+
+//Change Password 
+UserSchema.statics.changePassword = async function (newPassowrd, email) {
+    console.log(newPassowrd, email)
+    let userFound = await UserModel.findOne({ email }, (err, user) => {
+        if (err) {
+            throw err;
+        }
+        return user;
+    });
+
+    if (userFound) {
+        await UserModel.updateOne(userFound, { "password_hash": newPassowrd })
+        console.log(userFound)
+    }
+    else {
+        throw "User not exist"
+    }
+}
+
 
 /**
  * @returns {The user with its new access and refresh tokens}

@@ -13,6 +13,7 @@ import Account from "./Componenets/Account/Account";
 import ChangeDetails from "./Componenets/Change-Details/ChangeDetails";
 import "./App.css";
 import ForgotPassword from './Componenets/ForgetPassword/ForgetPassword';
+import ResetPassword from './Componenets/ResetPassword/ResetPassword';
 //import 'bootstrap/dist/css/bootstrap.min.css';
 
 
@@ -34,6 +35,7 @@ function App() {
             <Route exact path="/scanning" component={Scanning}></Route>
             <Route exact path="/account" component={Account}></Route>
             <Route exact path="/login/reset" component = {ForgotPassword}></Route>
+            <Route exact path="/reset-password" component = {ResetPassword}></Route>
             <Route path='*' render={() =>
             (
               <Redirect to="/" />
