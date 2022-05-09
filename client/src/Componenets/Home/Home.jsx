@@ -8,7 +8,7 @@ import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Hidden from "@material-ui/core/Hidden";
 import OrBenAbaProfile from "../../Images/orBenAbaProfile.jpg"
-import ShakedBozikovskyProfile from "../../Images/ShakedBozikovskyProfile.jpg";
+
 
 
 const styles = (theme) => ({
@@ -72,25 +72,12 @@ const styles = (theme) => ({
 
 const Authors = [
     {
-        creator: "Or Ben-Aba",
-        profession: "Low level, Blockchain & Full stack",
+        creator: "COMMUNICATION_LTD",
+        profession: "Connecting People",
         description:
             `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
             Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
-        img: OrBenAbaProfile,
-        github: 'https://github.com/orbenaba',
-        twitter: 'https://twitter.com/or24647603',
-        linkedin: 'https://www.linkedin.com/in/or-ben-aba-6a329a1b3/'
-    },
-    {
-        creator: "Shaked Bozikovsky",
-        profession: "Full stack",
-        description:
-            `Proven technical skills with a diverse background. Highly motivated and a fast learner`,
-        img: ShakedBozikovskyProfile,
-        github: 'https://github.com/shakedbo',
-        twitter: 'https://twitter.com/or24647603',
-        linkedin: 'https://www.linkedin.com/in/shaked-bozikovsky-678034186'
+            img: OrBenAbaProfile,
     }
 ];
 
@@ -109,16 +96,15 @@ function Home(props) {
                             <Grid item md={6}>
                                 <div className={classes.mainFeaturedPostContent}>
                                     <Typography variant="display2" color="inherit" gutterBottom style={{ fontSize: '1.5rem' }}>
-                                        Content Mangement System
+                                        COMMUNICATION_LTD
                                     </Typography>
                                     <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
                                     </Typography>
                                     <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
-                                        Our CMS communicate with few microservices which run at the backend,
-                                        gathering information about given IPs or Domains and displaying it at a nice GUI.
-                                        The activity of each user can be viewed any time.
+                                        It is our...
                                    </Typography>
                                 </div>
+                                
                             </Grid>
                         </Grid>
                     </Paper>
