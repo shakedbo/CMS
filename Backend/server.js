@@ -1,20 +1,12 @@
 
 //Routing
 const express = require('express');
-const assetRoutes = require('./app/Routes/asset.routes');
+const customerRoutes = require('./app/Routes/customer.routes');
 const userRoutes = require('./app/Routes/user.routes');
 const { json, urlencoded } = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 
-/**
- * DataBase connecting
- */
-const mongoose = require('mongoose');
-const db = require('./app/Config/db.config').MongoURI;
-mongoose.connect(db, { useNewUrlParser: true })
-    .then(console.log('[+] MongoDB connected ...'))
-    .catch(err => console.error(err));
 
 
 async function main() {
@@ -32,7 +24,7 @@ async function main() {
     // Cookies for json web tokens
     app.use(cookieParser());
     //Setting routes to the express server
-    assetRoutes(app);
+    customerRoutes(app);
     userRoutes(app);
     const port2 = 4000;
     //connecting the server

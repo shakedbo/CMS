@@ -1,12 +1,8 @@
 {
     "scripts": {
-        "dev": "concurrently \"node .\\Backend\\server.js\" \"npm run start .\\client  \""
+        "dev": "concurrently \"node .\\Backend\\server.js\" \"cd .\\client && npm run start \""
     },
     "dependencies": {
-        "@prisma/client": "^3.13.0",
         "concurrently": "^6.0.2"
-    },
-    "devDependencies": {
-        "prisma": "^3.13.0"
     }
 }

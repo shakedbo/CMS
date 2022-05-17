@@ -1,5 +1,5 @@
 :root{
-    --mainBlue: blue;
-    --azure: rgb(162, 231, 255);
-    --purpleBlue: rgb(96, 56, 255);
+    --mainBlue: rgb(0, 4, 5);
+    --azure: rgb(236, 241, 243);
+    --purpleBlue: rgb(56, 63, 255);
 }

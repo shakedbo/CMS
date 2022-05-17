@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     btns: {
         color: 'white',
         textDecoration: 'none',
-        fontFamily: 'cursive',
+        fontFamily: 'Cochin',
         '&:hover': {
             backgroundColor: 'var(--azure)',
             color: 'black',
@@ -35,10 +35,10 @@ export default function Navbar() {
     const common = (nameOrLink) => {
         return (
             <div className={classes.root}>
-                <AppBar position="static" style={{ backgroundColor: 'black', fontFamily: 'cursive' }}>
+                <AppBar position="static" style={{ backgroundColor: 'black', fontFamily: 'Cochin' }}>
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            <Link to="/" className="btn" className={classes.btns}>CMS</Link>
+                            <Link to="/" className="btn" className={classes.btns}>Comm LTD</Link>
                         </Typography>
                         {nameOrLink}
                     </Toolbar>

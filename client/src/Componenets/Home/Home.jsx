@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import Hidden from "@material-ui/core/Hidden";
-import OrBenAbaProfile from "../../Images/orBenAbaProfile.jpg"
+import communicationPic from "../../Images/communicationPic.jpg"
 
 
 
@@ -27,7 +27,7 @@ const styles = (theme) => ({
         backgroundColor: 'black',
         color: theme.palette.common.white,
         marginBottom: theme.spacing.unit * 4,
-        fontFamily: 'cursive'
+        fontFamily: 'Cochin'
     },
     mainFeaturedPostContent: {
         padding: `${theme.spacing.unit * 6}px`,
@@ -45,7 +45,7 @@ const styles = (theme) => ({
         display: "flex",
         marginBottom: "1rem",
         backgroundColor: 'black',
-        fontFamily: 'cursive',
+        fontFamily: 'Cochin',
         color: 'var(--azure)'
     },
     cardDetails: {
@@ -73,11 +73,10 @@ const styles = (theme) => ({
 const Authors = [
     {
         creator: "COMMUNICATION_LTD",
-        profession: "Connecting People",
+        profession: "Communication solutions",
         description:
-            `Enthusiastic researcher, Clear understanding of Low Level concepts , and training in CTFs. Reversing huge softwares.
-            Motivated to learn, grow and excel. Adjusting easily to new environment and eager to expand my horizons.`,
-            img: OrBenAbaProfile,
+            `We specialize in matching the perfect communication plan to our clients`,
+            img: communicationPic,
     }
 ];
 
@@ -101,7 +100,7 @@ function Home(props) {
                                     <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
                                     </Typography>
                                     <Typography variant="headline" color="inherit" paragraph style={{ fontFamily: 'cursive' }}>
-                                        It is our...
+                                        Connects people
                                    </Typography>
                                 </div>
                                 
@@ -125,15 +124,10 @@ function Home(props) {
                                             <Typography variant="subheading" paragraph>
                                                 {author.description}
                                             </Typography>
-                                            <Typography variant="subheading" style={{ display: 'flex', justifyContent: 'center' }}>
-                                                <a href={author.github} target="_blank" className={classes.icon}><i class="fab fa-github fa-2x" style={{ marginRight: '1rem' }}></i></a>
-                                                <a href={author.twitter} target="_blank" className={classes.icon}><i class="fab fa-twitter fa-2x" style={{ marginRight: '1rem' }}></i></a>
-                                                <a href={author.linkedin} target="_blank" className={classes.icon}><i class="fab fa-linkedin fa-2x" style={{ marginRight: '1rem' }}></i></a>
-                                            </Typography>
                                         </CardContent>
                                     </div>
                                     <Hidden xsDown>
-                                        <img src={author.img} style={{ width: '12rem', height: '15rem' }}></img>
+                                        <img src={author.img} style={{ width: '20rem', height: '15rem' }}></img>
                                     </Hidden>
                                 </Card>
                             </Grid>
@@ -143,13 +137,6 @@ function Home(props) {
             </div>
             {/* Footer */}
             <footer className={classes.footer}>
-                <Typography
-                    variant="subheading"
-                    align="center"
-                    component="p"
-                >
-                    All rights are reserved to Or Ben-Aba
-        </Typography>
             </footer>
             {/* End footer */}
         </React.Fragment>

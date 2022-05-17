@@ -1,5 +1,4 @@
-const mongoose = require('mongoose');
-const uniqueValidator = require('mongoose-unique-validator');
+
 const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 // We need a secret to sign and validate JWT's. This secret should be a random
@@ -16,19 +15,11 @@ const HASH_LENGTH = 512;
 /**
  * Denote 4me, we never save discovered passwords in the DB, only their hashes
  */
-const UserSchema = new mongoose.Schema({
-    username: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [R_USERNAME, 'is invalid'], index: true },
-    email: { type: String, lowercase: true, unique: true, required: [true, "can't be blank"], match: [R_EMAIL, 'is invalid'], index: true },
-    password_hash: String,
-    salt: String,
-    accessToken: String,
-    refreshToken: String,
-    oldPasswords: [String]
-}, { timestamps: true });
 
-UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
+// UserSchema.plugin(uniqueValidator, { message: 'is already taken.' });
 
 // Using mongo hooks to save the password as a hash in the DataBase and not as plain text
+/*
 UserSchema.pre(["updateOne", "save"], function () {
     // Generate salt only when the password_hash has changed
     if (this.isModified("password_hash")) {
@@ -41,12 +32,14 @@ UserSchema.pre(["updateOne", "save"], function () {
         this.accessToken = createToken({ username: this.username, email: this.email }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
     }
 });
+*/
 
 // Methods
 /**
  * @param {The given password from the user in order to check if he is authenticated} password 
  * @returns validate passwords - T/F
  */
+/*
 UserSchema.methods.validatePassword = function (password) {
     var password_hash = crypto.pbkdf2Sync(password, this.salt, ITERATIONS, HASH_LENGTH, 'sha512').toString('hex');
     return this.password_hash === password_hash;
@@ -56,11 +49,12 @@ UserSchema.methods.validateEmail = function (email) {
 
     return this.email === email;
 };
-
+*/
 
 /**
  * Deleting existed user with its password & username
  */
+/*
 UserSchema.statics.deleteUserByUsername = async function (username) {
     let userDeleted = await UserModel.findOne({ "username": username });
     if (userDeleted) {
@@ -70,8 +64,9 @@ UserSchema.statics.deleteUserByUsername = async function (username) {
         throw "User not exist"
     }
 }
-
+*/
 //Change Password 
+/*
 UserSchema.statics.changePassword = async function (newPassowrd, email) {
     console.log(newPassowrd, email)
     let userFound = await UserModel.findOne({ email }, (err, user) => {
@@ -89,11 +84,12 @@ UserSchema.statics.changePassword = async function (newPassowrd, email) {
         throw "User not exist"
     }
 }
-
+*/
 
 /**
  * @returns {The user with its new access and refresh tokens}
  */
+/*
 UserSchema.statics.login = async function (username, password) {
     // If the user did not authenticated then an exception would be thrown
     const userM = await UserModel.authenticate(username, password);
@@ -107,11 +103,12 @@ UserSchema.statics.login = async function (username, password) {
     await userM.save();
     return userM;
 }
-
+*/
 /**
  * @returns {User Model in case {username, password} is an authenticated pair, otherwise an exception is thrown}
  * Authenticate the user using its password & username
  */
+/*
 UserSchema.statics.authenticate = async function (username, password) {
     if (typeof (username) === 'undefined' || typeof (password) === 'undefined') {
         throw "Username and Password must be provided ...";
@@ -138,6 +135,9 @@ UserSchema.statics.authenticate = async function (username, password) {
         throw ERRORS.ACCOUNT_NOT_EXIST;
     }
 }
+*/
+
+/*
 
 UserSchema.statics.refreshAccessToken = async function (accessToken, refreshToken, callBack) {
     if (!accessToken || typeof (accessToken) == 'undefined' || !refreshToken || typeof (refreshToken) === 'undefined') {
@@ -162,10 +162,12 @@ UserSchema.statics.refreshAccessToken = async function (accessToken, refreshToke
         }
     })
 }
+*/
 
 // Verify the cookie from browser with the token save in mongodb and
 // the access to controlled route will be granted if both matches.
 // In case the access token expired, we refresh it
+/*
 UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshToken, callBack) {
     if (!accessToken || typeof (accessToken) === 'undefined') {
         throw "No access token specified :(";
@@ -198,6 +200,8 @@ UserSchema.statics.findByTokenOrRefresh = async function (accessToken, refreshTo
         }
     })
 }
+*/
+
 
 /**
  * @param {new data} newUsername_newPassword_newEmail
@@ -236,6 +240,6 @@ function createToken(payload, secret, expiresIn) {
     })
 }
 
-const UserModel = mongoose.model('User', UserSchema);
+// const UserModel = mongoose.model('User', UserSchema);
 
-module.exports = { UserModel, UserSchema };
+module.exports = {/* UserModel, UserSchema */ };
