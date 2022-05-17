@@ -11,7 +11,7 @@ module.exports = (flag = false) => {
         }
         else {
             let name = req.body.name, password = req.body.password, email = req.body.email;
-            if (typeof (name) === 'undefined' || typeof (password) === 'undefined' || (typeof (email) === 'undefined' && flag === false)) {
+            if (typeof (email) === 'undefined' || typeof (password) === 'undefined' || (typeof (name) === 'undefined' && flag === false)) {
                 if (typeof (res.locals.unauthorized) !== 'undefined') {
                     return res.status(401).send(res.locals.unauthorized);
                 }
@@ -21,18 +21,12 @@ module.exports = (flag = false) => {
             if (IsCommonPassword(password)) {
                 return res.status(400).send({ error: "Too week password; Some dictionary attack might be happened :(" })
             }
-            if (!name.match(R_USERNAME)) {
+            if (!email.match(R_EMAIL)) {
                 return res.status(400).send({ error: INVALID_USERNAME });
             }
 
             if (!password.match(R_PASSWORD)) {
                 return res.status(400).send({ error: INVALID_PASSWORD });
-            }
-            // /\S+@\S+\.\S+/
-            // \S means everything that is not whitespace-> \s
-            // .(dot) is a special character so we need to escape it with backslash -> \.
-            if (flag === false && !email.match(R_EMAIL)) {
-                return res.status(400).send({ error: INVALID_EMAIL });
             }
             next();
         }
