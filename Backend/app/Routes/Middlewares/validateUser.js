@@ -10,17 +10,18 @@ module.exports = (flag = false) => {
             next();
         }
         else {
-            let username = req.body.username, password = req.body.password, email = req.body.email;
-            if (typeof (username) === 'undefined' || typeof (password) === 'undefined' || (typeof (email) === 'undefined' && flag === false)) {
+            let name = req.body.name, password = req.body.password, email = req.body.email;
+            if (typeof (name) === 'undefined' || typeof (password) === 'undefined' || (typeof (email) === 'undefined' && flag === false)) {
                 if (typeof (res.locals.unauthorized) !== 'undefined') {
                     return res.status(401).send(res.locals.unauthorized);
                 }
-                return res.status(400).send({ error: flag ? 'Username & password are required fields' : 'Username, password & email are required fields' });
+                return res.status(400).send({ error: flag ? 'Username & password are required fields' : 'name, password & email are required fields' });
             }
+            
             if (IsCommonPassword(password)) {
                 return res.status(400).send({ error: "Too week password; Some dictionary attack might be happened :(" })
             }
-            if (!username.match(R_USERNAME)) {
+            if (!name.match(R_USERNAME)) {
                 return res.status(400).send({ error: INVALID_USERNAME });
             }
 

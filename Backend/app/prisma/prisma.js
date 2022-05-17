@@ -1,19 +1,21 @@
 const { PrismaClient } = require('@prisma/client')
 const crypto = require("crypto");
 const cryptoJS = require("crypto-js");
+const { ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE, REFRESH_TOKEN_LIFE, REFRESH_TOKEN_SECRET } = require('../Config');
 const prisma = new PrismaClient()
+const jwt = require('jsonwebtoken');
 
 prisma.$use(async (params, next) => {
     if (!((params.action == 'create' || params.action === "update") && params.model == 'User')) {
         return next(params);
     }
-    if (!params.data.password_hash) {
+    const user = params.args.data;
+    if(!user.password_hash){
         return next(params);
     }
-    const user = params.args.data;
     user.salt = crypto.randomBytes(16).toString('hex');
     hmac = cryptoJS.HmacSHA256(process.env.secret_login_pass, user.salt + user.password_hash);
-    user.password_hash = CryptoJS.enc.Base64.stringify(hmac);
+    user.password_hash = cryptoJS.enc.Base64.stringify(hmac);
     user.refreshToken = createToken({ username: this.username, email: this.email }, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
     user.accessToken = createToken({ username: this.username, email: this.email }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
     params.args.data = user;

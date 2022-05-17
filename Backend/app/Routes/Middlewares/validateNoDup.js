@@ -11,11 +11,11 @@ module.exports = () => {
         }
 
         // Validating the given fields
-        let newUsername = req.body.username, newPassword = req.body.password, newEmail = req.body.email;
-        if (typeof (newUsername) === 'undefined' || typeof (newPassword) === 'undefined' || typeof (newEmail) === 'undefined') {
+        let newName = req.body.name, newPassword = req.body.password, newEmail = req.body.email;
+        if (typeof (newName) === 'undefined' || typeof (newPassword) === 'undefined' || typeof (newEmail) === 'undefined') {
             return res.status(400).send({ error: 'Username, password & email are required fields' });
         }
-        if (!newUsername.match(R_USERNAME)) {
+        if (!newName.match(R_USERNAME)) {
             return res.status(400).send({ error: INVALID_USERNAME });
         }
 

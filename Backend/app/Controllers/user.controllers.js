@@ -3,6 +3,7 @@ const validateEmail = require('../Routes/Middlewares/validateEmail');
 const nodemailer = require('nodemailer');
 const { saveToken, useToken } = require('../Microservices/ValidToken');
 const prisma = require("../prisma/prisma")
+const cryptoJS = require("crypto-js");
 
 var transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -17,7 +18,7 @@ var transporter = nodemailer.createTransport({
 async function signup(req, res) {
     try {
         const name = req.body.name, password_hash = req.body.password, email = req.body.email;
-        const createdUser = prisma.user.create({
+        const createdUser = await prisma.user.create({
             data: {
                 name: name,
                 email,
@@ -28,8 +29,9 @@ async function signup(req, res) {
         // Secure enforcing that the cookies are sent only over https and not over http
         res.cookie(ACCESS_TOKEN, createdUser.accessToken, { /*secure: true,*/ httpOnly: false })
         res.cookie(REFRESH_TOKEN, createdUser.refreshToken, { /*secure: true,*/ httpOnly: true })
-        res.status(200).send({ user });
+        res.status(200).send({ createdUser });
     } catch (error) {
+        console.log(error);
         // If the error is thrown as a result of "username/email is already taken" we sanitize the error to the client side
         if (typeof error.message !== 'undefined') {
             return res.status(403).send({ error: error.message });
@@ -76,7 +78,7 @@ async function forgotPassword(req, res) {
 async function resetPassword(req, res) {
     const { password, email, token } = req.body
     try {
-        prisma.user.update({ data: { password_hash: password }, where: { email } })
+        await prisma.user.update({ data: { password_hash: password }, where: { email } })
         useToken(token, email)
         console.log("[+] New user:\n", user)
         return res.status(200).send({ user })
@@ -99,7 +101,7 @@ async function login(req, res) {
             const email = req.body.email, password = req.body.password;
             const user = await prisma.user.findUnique({ where: { email } })
             const hmac = cryptoJS.HmacSHA256(process.env.secret_login_pass, user.salt + password);
-            const hashenv = CryptoJS.enc.Base64.stringify(hmac);
+            const hashenv = cryptoJS.enc.Base64.stringify(hmac);
             if (hashenv !== user.password_hash) {
                 return res.status(401).send({ error: "cannot" });
             }
