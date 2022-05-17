@@ -11,7 +11,7 @@ import Logout from "../Logout/logout";
 
 export default function Login() {
     const history = useHistory();
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [displayedError, setDisplayedError] = useState('');
     const classes = useStyles();
@@ -23,7 +23,7 @@ export default function Login() {
         event.preventDefault()
         try {
             const response = await axios.post(ServerAddress + "api/user/login",
-                { username, password }, {
+                { email, password }, {
                 withCredentials: true // Sent cookies if there are
             });
             history.push('/');
@@ -39,8 +39,8 @@ export default function Login() {
         setPassword(password);
     }
 
-    const onUsernameChange = username => {
-        setUsername(username);
+    const onEmailChange = email => {
+        setEmail(email);
     }
 
     let error = <div></div>
@@ -64,15 +64,15 @@ export default function Login() {
                 else {
                     return (
                         <form onSubmit={(event) => onSubmit(event, value.handleChangeUser)} className={classes.form} style={{ height: '350px', fontFamily: 'cursive' }}>
-                            <label className={classes.formLabel}>Username</label>
+                            <label className={classes.formLabel}>Email</label>
                             <input
-                                name="userName"
+                                name="email"
                                 defaultValue=""
                                 className={classes.materialUIInput}
-                                onChange={e => onUsernameChange(e.target.value)}
-                                required='You must provide username'
-                                pattern={REGEX.R_USERNAME}
-                                title={ERRORS.INVALID_USERNAME}
+                                onChange={e => onEmailChange(e.target.value)}
+                                required='You must provide an email'
+                                pattern={REGEX.R_EMAIL}
+                                title={ERRORS.INVALID_EMAIL}
                             />
                             <label className={classes.formLabel}>Password</label>
                             <input
@@ -93,7 +93,7 @@ export default function Login() {
                     )
                 }
             }}
-            
+
         </Consumer>
     );
 };

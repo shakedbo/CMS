@@ -12,7 +12,7 @@ import Logout from "../Logout/logout";
 
 export default function Register() {
     const history = useHistory();
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [email, setEmail] = useState('');
@@ -28,7 +28,7 @@ export default function Register() {
                 throw "Passwords not match.";
             }
             const response = await axios.post(ServerAddress + "api/user/register",
-                { username, password, email }, { withCredentials: true });
+                { name, password, email }, { withCredentials: true });
             history.push('/');
             handleChangeUser(response.data.user)
         } catch (err) {
@@ -49,8 +49,8 @@ export default function Register() {
     const onPasswordChange = password => {
         setPassword(password);
     }
-    const onUsernameChange = username => {
-        setUsername(username);
+    const onNameChange = name => {
+        setName(name);
     }
     const onConfirmPasswordChange = confirm_password => {
         setConfirmPassword(confirm_password);
@@ -81,16 +81,14 @@ export default function Register() {
                 else {
                     return (
                         <form name="formInput" onSubmit={(event) => onSubmit(event, value.handleChangeUser)} className={classes.form} style={{ fontFamily: 'cursive' }}>
-                            <label className={classes.formLabel}>Username</label>
+                            <label className={classes.formLabel}>Name</label>
                             <input
-                                name="userName"
+                                name="name"
                                 defaultValue=""
                                 className={classes.materialUIInput}
-                                onChange={e => onUsernameChange(e.target.value)}
-                                required='You must provide username'
-                                pattern={REGEX.R_USERNAME}
-                                title={ERRORS.INVALID_USERNAME}
-                                autoComplete="username"
+                                onChange={e => onNameChange(e.target.value)}
+                                required='You must provide a name'
+                                autoComplete="name"
                             />
                             <label className={classes.formLabel}>Password</label>
                             <input
