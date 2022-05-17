@@ -27,8 +27,6 @@ module.exports = function routes(app) {
 
     router.post('/logout', authenticate(true), logout);
 
-    router.post('/change-details', authenticate(true), noDup(), changeDetails);
-
     router.post('/forgot-password', forgotPassword);
 
     router.post('/validate-change-password', validateEmailToken, (req, res) => res.sendStatus(200));
