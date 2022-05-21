@@ -22,18 +22,18 @@ export default function ChangeDetails() {
         //api/user/login
         // Preventing the default form refreshing
         event.preventDefault()
-        // try {
-        //     const response = await axios.post(ServerAddress + "api/user/login",
-        //         { username, password }, {
-        //         withCredentials: true // Sent cookies if there are
-        //     });
-        //     history.push('/');
-        //     handleChangeUser(response.data.user)
-        // } catch (err) {
-        //     console.log("err = ", err)
-        //     // To do - Take care of invalid username/ password 400 response errors
-        //     setDisplayedError(err.response.data.error);
-        // }
+        try {
+            const response = await axios.post(ServerAddress + "api/user/login",
+                { username, password }, {
+                withCredentials: true // Sent cookies if there are
+            });
+            history.push('/');
+            handleChangeUser(response.data.user)
+        } catch (err) {
+            console.log("err = ", err)
+            // To do - Take care of invalid username/ password 400 response errors
+            setDisplayedError(err.response.data.error);
+        }
     };
 
     const onPasswordChange = password => {
@@ -87,6 +87,7 @@ export default function ChangeDetails() {
                                 className={classes.materialUIInput}
                                 onChange={e => onPasswordChange(e.target.value)}
                                 required
+                                type={"password"}
                                 pattern={REGEX.R_PASSWORD}
                                 title={ERRORS.INVALID_PASSWORD}
                             />

@@ -11,7 +11,7 @@ export default function Logout() {
     const out = async () => {
         try {
             const res = await axios.post(ServerAddress + "api/user/logout", {}, { withCredentials: true });
-            history.push('/login');
+            window.location.reload()
         } catch (err) {
             console.log("error ....", err.response)
         }
@@ -24,7 +24,7 @@ export default function Logout() {
         <Consumer>
             {value => {
                 const { user } = value.state;
-                if (user._id != null) {
+                if (user) {
                     return (
                         <div>
                             <Title name="Do you want 2" title="log out?"></Title>

@@ -51,7 +51,7 @@ export default function Navbar() {
         <Consumer>
             {value => {
                 const { user } = value.state
-                if (user._id == null) {
+                if (!user) {
                     return (
                         common(<Link to="/login" className={classes.btns}>Login</Link>)
                     );

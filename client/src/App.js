@@ -7,9 +7,6 @@ import Login from "./Componenets/Login/Login";
 import Register from "./Componenets/Register/Register";
 import Logout from './Componenets/Logout/logout';
 import Sidebar from "./Componenets/Sidebar/Sidebar";
-import Activity from "./Componenets/Activity/Activity";
-import Scanning from "./Componenets/Scanning/Scanning";
-import Account from "./Componenets/Account/Account";
 import ChangeDetails from "./Componenets/Change-Details/ChangeDetails";
 import "./App.css";
 import ForgotPassword from './Componenets/ForgetPassword/ForgetPassword';
@@ -30,10 +27,7 @@ function App() {
             <Route exact path="/login" component={Login}></Route>
             <Route exact path="/register" component={Register}></Route>
             <Route exact path="/logout" component={Logout}></Route>
-            <Route exact path="/my-activity" component={Activity}></Route>
             <Route exact path="/change-details" component={ChangeDetails}></Route>
-            <Route exact path="/scanning" component={Scanning}></Route>
-            <Route exact path="/account" component={Account}></Route>
             <Route exact path="/login/reset" component = {ForgotPassword}></Route>
             <Route exact path="/reset-password" component = {ResetPassword}></Route>
             <Route path='*' render={() =>

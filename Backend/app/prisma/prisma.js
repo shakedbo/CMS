@@ -10,14 +10,14 @@ prisma.$use(async (params, next) => {
         return next(params);
     }
     const user = params.args.data;
-    if(!user.password_hash){
+    if (!user.password_hash) {
         return next(params);
     }
     user.salt = crypto.randomBytes(16).toString('hex');
     hmac = cryptoJS.HmacSHA256(process.env.secret_login_pass, user.salt + user.password_hash);
     user.password_hash = cryptoJS.enc.Base64.stringify(hmac);
-    user.refreshToken = createToken({ username: this.username, email: this.email }, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
-    user.accessToken = createToken({ username: this.username, email: this.email }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
+    user.refreshToken = createToken({ name: user.name, email: user.email }, REFRESH_TOKEN_SECRET, REFRESH_TOKEN_LIFE);
+    user.accessToken = createToken({ name: user.name, email: user.email }, ACCESS_TOKEN_SECRET, ACCESS_TOKEN_LIFE);
     params.args.data = user;
 
 
@@ -30,6 +30,6 @@ function createToken(payload, secret, expiresIn) {
         expiresIn
     })
 }
-
+prisma.createToken = createToken
 
 module.exports = prisma

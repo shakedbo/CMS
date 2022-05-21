@@ -63,7 +63,7 @@ function Row(props) {
                                 </TableHead>
                                 <TableBody>
                                     {row.systems.map((systemRow) => (
-                                        <TableRow key={systemRow._id}>
+                                        <TableRow key={systemRow.id}>
                                             <TableCell component="th" scope="row" style={{ fontFamily: 'cursive' }}>
                                                 {systemRow.name}
                                             </TableCell>

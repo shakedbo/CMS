@@ -84,16 +84,18 @@ export function Provider(props) {
         async function fetchData() {
             setIsLoaded(true);
             const result = await IsAuthenticaed();
+            console.log(`result=${result}`);
             if (result) {
                 setUser(result)
             }
             else {
-                // history.push('/login')
+                setUser(undefined)
+                history.push('/login')
             }
             setIsLoaded(false);
         }
         fetchData()
-    }, [])
+    }, [history])
 
     // Cause "this" (without the this binding) is refred to the child component, we enfore the father (Context) to be "this"
     const handleChangeUser = (user) => {

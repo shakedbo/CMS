@@ -16,15 +16,15 @@ model User {
   name          String
   password_hash String
   salt          String
-  accessToken   String
-  refreshToken  String
+  accessToken   String   @unique
+  refreshToken  String   @unique
   oldPasswords  String[]
 }
 
 model Customer {
-  id    Int    @id @default(autoincrement())
-  name  String
-  email String @unique
+  id      Int    @id @default(autoincrement())
+  name    String
+  email   String @unique
   program String
 
 }

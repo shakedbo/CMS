@@ -29,8 +29,10 @@ export default function Register() {
             }
             const response = await axios.post(ServerAddress + "api/user/register",
                 { name, password, email }, { withCredentials: true });
-            history.push('/');
-            handleChangeUser(response.data.user)
+
+                console.log(`regist res = ${JSON.stringify(response.data)}`);
+            handleChangeUser(response.data.createdUser)
+            history.push('/');  
         } catch (err) {
             if (typeof err.response !== 'undefined') {
                 if (err.response.data.error.includes('User validation failed:')) {
@@ -69,7 +71,7 @@ export default function Register() {
         <Consumer>
             {value => {
                 const { user } = value.state;
-                if (user._id != null) {
+                if (!!user) {
                     return (
                         <React.Fragment>
                             <h1>You are Already in</h1>

@@ -23,17 +23,11 @@ const Sidebar = ({ width, height }) => {
             {value => {
                 const { user } = value.state;
                 let displayedLinks = <div></div>
-                if (user._id != null) {
+                if (!!user) {
                     displayedLinks = (
                         <div>
                             <div className="space"></div>
-                            <Link to="/account" className="link">Account</Link>
-                            <div className="space"></div>
-                            <Link to="/my-activity" className="link">My Activity</Link>
-                            <div className="space"></div>
                             <Link to="/change-details" className="link">Change Details</Link>
-                            <div className="space"></div>
-                            <Link to="/scanning" className="link">Scan</Link>
                             <div className="space"></div>
                         </div>
                     )

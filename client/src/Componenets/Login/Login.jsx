@@ -31,7 +31,7 @@ export default function Login() {
         } catch (err) {
             console.log("err = ", err)
             // To do - Take care of invalid username/ password 400 response errors
-            setDisplayedError(err.response.data.error);
+            setDisplayedError(`${err?.response?.data?.error}`);
         }
     };
 
@@ -51,8 +51,9 @@ export default function Login() {
     return (
         <Consumer>
             {value => {
+                console.log(`value=${JSON.stringify(value)}`);
                 const { user } = value.state;
-                if (user._id != null) {
+                if (!!user ) {
                     return (
                         <React.Fragment>
                             <h1>You are Already in</h1>
