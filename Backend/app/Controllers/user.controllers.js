@@ -9,10 +9,10 @@ var transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "505480d644e0be",
-      pass: "f925ef540e3699"
+        user: "505480d644e0be",
+        pass: "f925ef540e3699"
     }
-  });
+});
 
 
 async function signup(req, res) {
@@ -77,8 +77,14 @@ async function forgotPassword(req, res) {
 
 async function resetPassword(req, res) {
     const { password, email, token } = req.body
+
     try {
-        const user = await prisma.user.update({ data: { password_hash: password }, where: { email } })
+        const userFromDb = await prisma.user.findUnique({ where: { email } })
+        const password_hash = prisma.generatePassword({ salt: userFromDb.salt, password })
+        if (userFromDb.oldPasswords.includes(password_hash)) {
+            throw "Password in history"
+        }
+        const user = await prisma.user.update({ data: { password_hash }, where: { email } })
         useToken(token, email)
         console.log("[+] New user:\n", user)
         return res.status(200).send({ user })
