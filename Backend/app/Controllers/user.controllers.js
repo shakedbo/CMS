@@ -5,14 +5,14 @@ const { saveToken, useToken } = require('../Microservices/ValidToken');
 const prisma = require("../prisma/prisma")
 const cryptoJS = require("crypto-js");
 
-var transporter = nodemailer.createTransport({
-    service: 'gmail',
+var transport = nodemailer.createTransport({
+    host: "smtp.mailtrap.io",
+    port: 2525,
     auth: {
-        user: 'team5risk@gmail.com',
-        pass: 'TRK12345!'
+      user: "505480d644e0be",
+      pass: "f925ef540e3699"
     }
-});
-
+  });
 
 
 async function signup(req, res) {
@@ -63,7 +63,7 @@ async function forgotPassword(req, res) {
     };
 
     try {
-        const info = transporter.sendMail(mailOptions);
+        const info = transport.sendMail(mailOptions);
         console.log('Email sent: ' + info.response);
     }
     catch (error) {
@@ -71,18 +71,19 @@ async function forgotPassword(req, res) {
         res.sendStatus(400)
     }
     res.sendStatus(200)
-    //console.log(validEmail, email, token)
+    console.log(validEmail, email, token)
 
 }
 
 async function resetPassword(req, res) {
     const { password, email, token } = req.body
     try {
-        await prisma.user.update({ data: { password_hash: password }, where: { email } })
+        const user = await prisma.user.update({ data: { password_hash: password }, where: { email } })
         useToken(token, email)
         console.log("[+] New user:\n", user)
         return res.status(200).send({ user })
     } catch (error) {
+        console.error(`resetPassword error = ${error}`);
         return res.status(400).send({ error })
     }
 }

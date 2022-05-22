@@ -7,18 +7,18 @@ function saveToken(token, email){
     setTimeout(()=>{
         console.log(`invalidaing ${email}`)
         tokenCache[email].status = INVALID
-    },300000)//60000 is a min, need to be 5 min change it later
+    },3000000)//60000 is a min, need to be 5 min change it later
 }
 
 function validToken(token, email){
     console.log(token, email)
     const cacheObj = tokenCache[email]
     if(cacheObj && token === cacheObj.token && cacheObj.status === VALID){
-        console.log("true")
+        console.log("valid:toekn true")
         return true
     }
     else {
-        console.log("false")
+        console.log("valid:token false")
         return false
     }
 }

@@ -4,7 +4,9 @@ function validateEmailToken(request, response, next) {
     const token = request.body.token
     const tokenIsValid = validToken(token, email)
     if (!tokenIsValid) {
+        console.log(`not valid token and email`);
         response.sendStatus(400)
+        return
     }
     next()
     // response.sendStatus(200)

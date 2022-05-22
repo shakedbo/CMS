@@ -6,6 +6,7 @@ import ERRORS from "../../Magic/Errors.magic";
 import useStyles from "../Login/useStyles.login";
 import { ServerAddress } from "../../Magic/Config.magic";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 export default function ResetPassword() {
 
@@ -18,6 +19,7 @@ export default function ResetPassword() {
     const [canSubmit, setCanSubmit] = useState(false)
     const [paramApproved, setParamApproved] = useState(false)
 
+    const history = useHistory();
     const classes = useStyles();
 
     useEffect(() => {
@@ -38,7 +40,7 @@ export default function ResetPassword() {
                 console.log(`not apprvoed`)
             });
         
-    }, [paramApproved])
+    }, [paramApproved,email,token])
 
 
     const onPasswordChange = password => {
@@ -55,7 +57,8 @@ export default function ResetPassword() {
         try {
             const response = await axios.post(ServerAddress + "api/user/reset-password",
                 { email, token, password }) 
-            //setIsSent(true)
+                history.push('/login')
+                //setIsSent(true)
         }
         catch (err) { 
             //setIsSent('error')

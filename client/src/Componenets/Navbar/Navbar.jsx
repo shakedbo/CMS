@@ -38,7 +38,7 @@ export default function Navbar() {
                 <AppBar position="static" style={{ backgroundColor: 'black', fontFamily: 'Cochin' }}>
                     <Toolbar>
                         <Typography variant="h6" className={classes.title}>
-                            <Link to="/" className="btn" className={classes.btns}>Comm LTD</Link>
+                            <Link to="/" className={classes.btns}>Comm LTD</Link>
                         </Typography>
                         {nameOrLink}
                     </Toolbar>
@@ -60,7 +60,7 @@ export default function Navbar() {
                     return (
                         common(
                             <div>
-                                <Link to="/scanning" className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Scan</Link>
+                                <Link to="/logout" className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Log out</Link>
                                 <h3 className={classes.btns} style={{ display: 'inline', marginLeft: '2rem' }}>Hello {user.username}</h3>
                             </div>
                         )
@@ -68,5 +68,6 @@ export default function Navbar() {
                 }
             }}
         </Consumer>
+        
     );
 }
