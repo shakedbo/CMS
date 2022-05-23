@@ -21,7 +21,7 @@ const options = {
     transition: transitions.SCALE
 }
 
-const Context = React.createContext();
+export const Context = React.createContext();
 
 const maxID = (arr) => {
     let maxi = 0;

@@ -31,7 +31,7 @@ module.exports = function routes(app) {
 
     router.post('/validate-change-password', validateEmailToken, (req, res) => res.sendStatus(200));
 
-    router.post('/reset-password', validateEmailToken, resetPassword)
+    router.post('/reset-password', validateEmailToken, authenticate(true), resetPassword)
     app.use('/api/user', router);
 
     app.post('*', (req, res) => res.status(404).send({ notFound: 'Status code 404' }));

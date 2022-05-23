@@ -86,7 +86,7 @@ async function resetPassword(req, res) {
         }
         const user = await prisma.user.update({ data: { password_hash }, where: { email } })
         useToken(token, email)
-        console.log("[+] New user:\n", user)
+        console.log("[+] update user:\n", user)
         return res.status(200).send({ user })
     } catch (error) {
         console.error(`resetPassword error = ${error}`);

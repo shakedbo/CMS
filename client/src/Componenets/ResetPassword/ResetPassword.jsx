@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import REGEX from "../../Magic/Regex.magic";
 import ERRORS from "../../Magic/Errors.magic";
@@ -7,6 +7,7 @@ import useStyles from "../Login/useStyles.login";
 import { ServerAddress } from "../../Magic/Config.magic";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { Context } from "../../Context";
 
 export default function ResetPassword() {
 
@@ -21,6 +22,7 @@ export default function ResetPassword() {
 
     const history = useHistory();
     const classes = useStyles();
+    const context = useContext(Context)
 
     useEffect(() => {
         const passequals = confirmPassword === password
@@ -29,9 +31,14 @@ export default function ResetPassword() {
 
     useEffect(() => {
         console.log(`effect`)
+        if (context.state?.user) {
+            console.log(`approved2 ${JSON.stringify(context.state?.user)}`);
+            !paramApproved && setParamApproved(true)
+            return
+        }
         axios.post(ServerAddress + "api/user/validate-change-password",
             { email, token })
-            .then(()=>{
+            .then(() => {
                 console.log(`approved`)
                 !paramApproved && setParamApproved(true)
             })
@@ -39,8 +46,8 @@ export default function ResetPassword() {
                 paramApproved && setParamApproved(false)
                 console.log(`not apprvoed`)
             });
-        
-    }, [paramApproved,email,token])
+
+    }, [paramApproved, email, token, context.state?.user])
 
 
     const onPasswordChange = password => {
@@ -55,12 +62,15 @@ export default function ResetPassword() {
         event.preventDefault()
         console.log('submit')
         try {
+            // console.log(`blablablba=${JSON.stringify(context?.state?.user)}`);
+            const currEmail = email ?? context?.state?.user?.email
+            console.log(`curr=${currEmail}`);
             const response = await axios.post(ServerAddress + "api/user/reset-password",
-                { email, token, password }) 
-                history.push('/login')
-                //setIsSent(true)
+                { email: currEmail, token, password }, { withCredentials: true })
+            history.push('/')
+            //setIsSent(true)
         }
-        catch (err) { 
+        catch (err) {
             //setIsSent('error')
         }
 

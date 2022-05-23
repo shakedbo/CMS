@@ -27,7 +27,7 @@ const Sidebar = ({ width, height }) => {
                     displayedLinks = (
                         <div>
                             <div className="space"></div>
-                            <Link to="/change-details" className="link">Change Details</Link>
+                            <Link to="/reset-password" className="link">Change Details</Link>
                             <div className="space"></div>
                         </div>
                     )
